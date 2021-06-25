@@ -1,0 +1,38 @@
+.table-editor{
+    position: fixed;
+    width: 100vw;
+    min-height: 100vh;
+    height: max-content;
+    top: 0%;
+    left: 0%;
+    z-index: 99999;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+.table-area{
+    position: absolute;
+    top: 10%;
+    width: 70%;
+    min-height: 100%;
+    height: max-content;
+    margin-left: 15%;
+}
+.table-editor-apply{
+    position: fixed;
+    width: 7%;
+    height: 25px;
+    min-width: 25px;
+    bottom: 2.5%;
+    right: 2.5%;
+}
+.table-row{
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    min-height: 30px;
+}
+.table-cell{
+    overflow: hidden;
+    min-width: 20%;
+    min-height: 40px;
+}

@@ -1,0 +1,43 @@
+/* LAYOUT */
+#header{
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: 0%;
+    left: 0%;
+    height: 10%;
+    width: 100%;
+}
+#editor{
+    position: absolute;
+    top: 11%;
+    left: 0.5%;
+    width: 50.5%;
+    min-height: 89%;
+}
+#preview{
+    position: fixed;
+    top: 11%;
+    left: 52%;
+    width: 47.5%;
+    height: 89%;
+}
+
+/* PERSONALITY */
+#header{
+    background-color: white;
+    border-bottom: 1.5px solid black;
+}
+#editor{
+    background-color: lightgray;
+}
+#preview{
+    background-color: white;
+    border: solid black 1.5px;
+}
+body{
+    background-color: #e5e5e5;
+}
+
+

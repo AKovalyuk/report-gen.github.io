@@ -1,34 +1,80 @@
 <!DOCTYPE html>
+<!--- just simple example -->
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="styles/page.css">
+        <link rel="stylesheet" type="text/css" href="styles/editor.css">
+        <link rel="stylesheet" type="text/css" href="styles/ui_elements.css">
+        <link rel="stylesheet" type="text/css" href="styles/table-editor.css">
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+        <script src="https://rawgit.com/marcj/css-element-queries/master/src/ResizeSensor.js"></script>
+        <script src="./scripts/font_metrics.js"></script>
+        <script src="./scripts/templates.js"></script>
+        <script src="./scripts/editor.js"></script>
     </head>
     <body>
+        <div id="editor">
+            <div class="structure-element" id="title" hidden></div>
+            <div class="structure-element" id="essay" hidden></div>
+            <div class="structure-element" id="table-of-contents" hidden></div>
+            <div class="structure-element" id="introduction" hidden>
+                <div class="editor-panel">ВВЕДЕНИЕ</div>
+                <div class="insert insert-nosections" onclick="show_buttons();" onmouseleave="hide_buttons();"></div>
+            </div>
+            <div class="structure-element" id="main">
+                <div class="insert" onclick="show_buttons();" onmouseleave="hide_buttons();"></div>
+            </div>
+            <div class="structure-element" id="conclusion" hidden></div>
+            <div class="structure-element" id="abbr-list" hidden></div>
+            <div class="structure-element" id="source-list" hidden></div>
+        </div>
         <div id="header">
-            <div id="block">HEADER</div>
-        </div>
-        <div id="content">
-            <div id="leftcol">
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
-                <div id="block"></div>
+            <div class="dropdown" id="dropdown-select-structure-element" onclick="dropdown_controller();">
+                Основная часть
+                <div class="dropdown-container" hidden>
+                    <div class="dropdown-element">
+                        <div class="dropdown-element-button" onclick="change_structure_element('title'); reset_dropdown_name('dropdown-select-structure-element');">Титульный лист</div>
+                        <input class="select-structure-element" type="checkbox">
+                    </div>
+                    <div class="dropdown-separator"></div>
+                    <div class="dropdown-element">
+                        <div class="dropdown-element-button" onclick="change_structure_element('essay'); reset_dropdown_name('dropdown-select-structure-element');">Реферат</div>
+                        <input class="select-structure-element" type="checkbox">
+                    </div>
+                    <div class="dropdown-separator"></div>
+                    <div class="dropdown-element">
+                        <div class="dropdown-element-button" onclick="change_structure_element('table-of-contents'); reset_dropdown_name('dropdown-select-structure-element');">Содержание</div>
+                        <input class="select-structure-element" type="checkbox">
+                    </div>
+                    <div class="dropdown-separator"></div>
+                    <div class="dropdown-element">
+                        <div class="dropdown-element-button" onclick="change_structure_element('introduction'); reset_dropdown_name('dropdown-select-structure-element');">Введение</div>
+                        <input class="select-structure-element" type="checkbox">
+                    </div>
+                    <div class="dropdown-separator"></div>
+                    <div class="dropdown-element">
+                        <div class="dropdown-element-button" onclick="change_structure_element('main'); reset_dropdown_name('dropdown-select-structure-element');">Основная часть</div>
+                    </div>
+                    <div class="dropdown-separator"></div>
+                    <div class="dropdown-element">
+                        <div class="dropdown-element-button" onclick="change_structure_element('conclusion'); reset_dropdown_name('dropdown-select-structure-element');">Заключение</div>
+                        <input class="select-structure-element" type="checkbox">
+                    </div>
+                    <div class="dropdown-separator"></div>
+                    <div class="dropdown-element">
+                        <div class="dropdown-element-button" onclick="change_structure_element('abbr-list'); reset_dropdown_name('dropdown-select-structure-element');">Список сокращений</div>
+                        <input class="select-structure-element" type="checkbox">
+                    </div>
+                    <div class="dropdown-separator"></div>
+                    <div class="dropdown-element">
+                        <div class="dropdown-element-button" onclick="change_structure_element('source-list'); reset_dropdown_name('dropdown-select-structure-element');">Список источников</div>
+                        <input class="select-structure-element" type="checkbox">
+                    </div>
+                </div>
             </div>
-            <div id="rightcol">
-                <div id="preview"></div>
-            </div>
         </div>
+        <div id="preview"></div>
+        
     </body>
 </html>

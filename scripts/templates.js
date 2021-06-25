@@ -1,0 +1,16 @@
+const button_add_paragraph = '<div class="add-button" onclick="add_paragraph(); show_buttons(event.target.parentElement);">P</div>';
+const button_add_section = '<div class="add-button" onclick="add_section(); show_buttons(event.target.parentElement);">S</div>';
+const button_add_image = '<div class="add-button" onclick="add_image(); show_buttons(event.target.parentElement);">I</div>';
+const button_add_formula = '<div class="add-button" onclick="add_formula(); show_buttons(event.target.parentElement);">F</div>';
+const button_add_enumeration = '<div class="add-button" onclick="add_enumeration(); show_buttons(event.target.parentElement);">E</div>';
+const button_add_table = '<div class="add-button" onclick="add_table(); show_buttons(event.target.parentElement);">T</div>';
+const button_add_code_snippet = '<div class="add-button" onclick="add_code_snippet(); show_buttons(event.target.parentElement);">C</div>';
+const paragraph = '<div class="paragraph editor-element"><textarea class="paragraph-text" onblur="paragraph_update_cache();"></textarea></div>';
+const section = '<div class="section editor-element"><div class="heading"><textarea class="heading-text"></textarea></div><div class="section-content"><div class="insert" onclick="show_buttons();" onmouseleave="hide_buttons();"></div></div>';
+const insert = '<div class="insert" onclick="show_buttons();" onmouseleave="hide_buttons();"></div>';
+const code_snippet = '<div class="code-snippet editor-element"><textarea class="code-snippet-caption"></textarea><textarea class="code-snippet-text"></textarea></div>'
+const enumeration_element = '<textarea class="enumeration-text" onblur="enumeration_onblur();"></textarea>'
+const enumeration = '<div class="enumeration editor-element"><textarea class="enumeration-text" onblur="enumeration_onblur();"></textarea></div>'
+const image = '<div class="image editor-element"><img class="image-preview" onerror="on_uncorrect_image();"></img><input class="image-load" type="file" accept="image/jpeg,image/jpg,image/png,.png,.jpg,.jpeg" onchange="on_image_load();"><button class="image-remove" onclick="remove_image();">X</button><textarea class="image-caption-text"></textarea></div>'
+const table = '<div class="table editor-element"><textarea class="table-caption"></textarea><button class="button-open-table-editor" onclick="open_table_editor();">Открыть редактор таблиц</button><div class="table-editor" hidden><div class="table-area" data-widths="50,50"><div class="table-row"><textarea class="table-cell" onmousedown="table_cell_onmousedown();"></textarea><textarea class="table-cell" onmousedown="table_cell_onmousedown();"></textarea></div><div class="table-row"><textarea class="table-cell" onmousedown="table_cell_onmousedown();"></textarea><textarea class="table-cell" onmousedown="table_cell_onmousedown();"></textarea></div></div><button class="table-editor-apply" onclick="escape_table_editor();">Применить</button></div></div>'
+const formula = '<div class="formula"><div></div><textarea class="formula-text" onblur="render_formula_preview();"></textarea></div>'
