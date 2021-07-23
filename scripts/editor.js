@@ -1,123 +1,131 @@
-function paragraph_update_cache(){
-    let time = performance.now();
-    event.path[0].parentElement.dataset.cache = line_divide('\t' + event.path[0].value, TimesNewRoman, 14, page_width);
-    console.log(performance.now() - time);
-}
-
-function show_buttons(e){
-    if(e == undefined){
-        e = event.target;
-    }
-    if(!e.matches('.insert') ){
+// shows buttons, to select type of new element
+function showButtons(evt){
+    // get event variable
+    if(evt == undefined)
+        evt = event.target;
+    // prevent triggering on empty space
+    if(!evt.matches('.insert'))
         return;
-    }
-    let sections = 0, editor_elements = 0, new_html = '';
-    for(let el of e.parentElement.children){
-        if(el.matches('.section')){
+    let sections = 0, editorElements = 0, newHTML = '';
+    // checking out context
+    for(let el of evt.parentElement.children){
+        if(el.matches('.section'))
             sections += 1;
-        }
-        else{
-            if(el.matches(".editor-element")){
-                editor_elements += 1;
-            }
-        }
     }
+    editorElements = (evt.parentElement.children.length - 1) / 2 - sections;
     if(sections == 0){
-        new_html += button_add_paragraph + button_add_table + button_add_code_snippet + 
-        button_add_formula + button_add_image + button_add_enumeration;
+        // TODO text only elements
+        newHTML += buttonAddTable + buttonAddCodeSnippet + buttonAddFormula + 
+        buttonAddImage + buttonAddParagraph + buttonAddEnumeration;
+        if(clipboard != null)
+            newHTML += buttonFromPaste;
     }
-    if(editor_elements == 0){
-        let section_level = 0, el = e;
-        while(el.nodeName != 'HTML'){
-            if(el.className == 'section'){
-                section_level += 1;
-            }
+    if(editorElements == 0){
+        // checking out nesting level
+        let sectionLevel = 0, el = evt;
+        while(el.nodeName != 'BODY'){
+            if(el.matches('.section'))
+                sectionLevel += 1;
             el = el.parentElement;
         }
-        if(section_level < 4 && !e.matches('.insert-nosections')){
-            new_html += button_add_section;
-        }
+        if(sectionLevel < 4 && !evt.matches('.insert-nosections'))
+            newHTML += buttonAddSection;
     }
-    e.innerHTML = new_html;
+    evt.innerHTML = newHTML;
 }
 
-function hide_buttons(){
-    if(event.target.matches('.insert')){
+//hides buttons
+function hideButtons(){
+    // prevent triggering on empty space
+    if(event.target.matches('.insert'))
+        // erase all buttons from inner HTML
         event.target.innerHTML = '';
+}
+
+// functions, that appends new element (add<type>)
+function addParagraph(){
+    let insertPanel = event.target.parentElement;
+    insertPanel.insertAdjacentHTML('afterend', insert);
+    insertPanel.insertAdjacentHTML('afterend', paragraph);
+}
+
+function addCodeSnippet(){
+    let insertPanel = event.target.parentElement;
+    insertPanel.insertAdjacentHTML('afterend', insert);
+    insertPanel.insertAdjacentHTML('afterend', codeSnippet);
+}
+
+function addEnumeration(){
+    let insertPanel = event.target.parentElement;
+    insertPanel.insertAdjacentHTML('afterend', insert);
+    insertPanel.insertAdjacentHTML('afterend', enumeration);
+}
+
+function addImage(){
+    let insertPanel = event.target.parentElement;
+    insertPanel.insertAdjacentHTML('afterend', insert);
+    insertPanel.insertAdjacentHTML('afterend', image);
+}
+
+function addTable(){
+    let insertPanel = event.target.parentElement;
+    insertPanel.insertAdjacentHTML('afterend', insert);
+    insertPanel.insertAdjacentHTML('afterend', table);
+}
+
+function addFormula(){
+    let insertPanel = event.target.parentElement;
+    insertPanel.insertAdjacentHTML('afterend', insert);
+    insertPanel.insertAdjacentHTML('afterend', formula);
+}
+
+// placeholder for appropriate nesting level
+const placeholders = [
+    "Название раздела",
+    "Название подраздела",
+    "Название пункта",
+    "Название подпункта"
+]
+
+function addSection(){
+    let insertPanel = event.target.parentElement;
+    let element = event.target, sectionLevel = 0;
+    // check nesting leven
+    while(element.nodeName != 'BODY'){
+        if(element.matches('.section'))
+            sectionLevel += 1;
+        element = element.parentElement;
+    }
+    insertPanel.insertAdjacentHTML('afterend', insert);
+    insertPanel.insertAdjacentHTML('afterend', section);
+    // set placeholder for textarea appropirate nesting level
+    event.target.parentElement.nextSibling.getElementsByClassName('heading-text')[0].placeholder = placeholders[sectionLevel];
+}
+
+// insert element from inner clipboard
+function fromPaste(){
+    let insertPanel = event.target.parentElement;
+    insertPanel.insertAdjacentHTML('afterend', insert);
+    insertPanel.insertAdjacentHTML('afterend', clipboard);
+    loadValue(event.target.parentElement.nextSibling);
+}
+
+// function for dropdown, make selected structure element visible, hide others
+function changeStructureElement(name){
+    for(let structureElement of document.getElementsByClassName('structure-element')){
+        if(structureElement.id != name)
+            structureElement.hidden = true;
+        else
+            structureElement.hidden = false;
     }
 }
 
-function add_paragraph(){
-    let insert_panel = event.target.parentElement;
-    insert_panel.insertAdjacentHTML('afterend', insert);
-    insert_panel.insertAdjacentHTML('afterend', paragraph);
-}
-
-function add_code_snippet(){
-    let insert_panel = event.target.parentElement;
-    insert_panel.insertAdjacentHTML('afterend', insert);
-    insert_panel.insertAdjacentHTML('afterend', code_snippet);
-}
-
-function add_enumeration(){
-    let insert_panel = event.target.parentElement;
-    insert_panel.insertAdjacentHTML('afterend', insert);
-    insert_panel.insertAdjacentHTML('afterend', enumeration);
-}
-
-function add_image(){
-    let insert_panel = event.target.parentElement;
-    insert_panel.insertAdjacentHTML('afterend', insert);
-    insert_panel.insertAdjacentHTML('afterend', image);
-}
-
-function add_table(){
-    let insert_panel = event.target.parentElement;
-    insert_panel.insertAdjacentHTML('afterend', insert);
-    insert_panel.insertAdjacentHTML('afterend', table);
-}
-
-function add_formula(){
-    let insert_panel = event.target.parentElement;
-    insert_panel.insertAdjacentHTML('afterend', insert);
-    insert_panel.insertAdjacentHTML('afterend', formula);
-}
-
-function add_section(){
-    let insert_panel = event.target.parentElement;
-    insert_panel.insertAdjacentHTML('afterend', insert);
-    insert_panel.insertAdjacentHTML('afterend', section);
-}
-
-function change_structure_element(name){
-    for(let structure_element of document.getElementsByClassName('structure-element')){
-        if(structure_element.id != name){
-            structure_element.hidden = true;
-        }
-        else{
-            structure_element.hidden = false;
-        }
-    }
-}
-
-function dropdown_controller(){
-    if(event.target.matches('.dropdown')){
-        console.log(event.target);
-        event.target.children[0].hidden = ! event.target.children[0].hidden;
-    }
-}
-
-function reset_dropdown_name(dropdown_id){
-    let dropdown = document.getElementById(dropdown_id);
-    dropdown.childNodes[0].textContent = event.target.innerText;
-}
-
-function enumeration_onblur(){
+// function, that adds new textarea into enumeration (on blured)
+function enumerationOnblur(){
     let children = event.target.parentElement.children;
-    if(children[children.length - 1].value != ''){
-        event.target.parentElement.insertAdjacentHTML("beforeend", enumeration_element);
-    }
-    for(let i = 0; i < children.length - 1; i++){
+    if(children[children.length - 1].value != '')
+        event.target.parentElement.insertAdjacentHTML("beforeend", enumerationElement);
+    for(let i = 1; i < children.length - 1; i++){
         if(children[i].value == ''){
             children[i].remove();
             break;
@@ -125,105 +133,359 @@ function enumeration_onblur(){
     }
 }
 
-function on_image_load(){
+// on load new image file
+function onImageLoad(){
     let input = event.target;
+    // check MIME type of file
     const mimes = ["image/jpeg", "image/jpg", "image/png", ".jpg", ".jpeg", ".png"];
-    if(mimes.indexOf(input.files[0].type) == -1){
+    if(mimes.indexOf(input.files[0].type) == -1)
         input.value = '';
-    }
+    // read file, and create preview
     let reader = new FileReader();
     reader.readAsDataURL(input.files[0]);
     reader.onload = function(){
-        input.parentElement.children[0].src = reader.result;
+        input.parentElement.children[1].src = reader.result;
     }
 }
 
-function on_uncorrect_image(){
+// if file is uncorrect image
+function onUncorrectImage(){
     event.target.src = "";
-    event.target.parentElement.children[1].value = "";
+    event.target.parentElement.children[2].value = "";
 }
 
-function remove_image(){
-    event.target.parentElement.children[0].src = "";
-    event.target.parentElement.children[1].value = "";
+function removeImage(){
+    event.target.parentElement.children[1].src = '';
 }
 
-function open_table_editor(){
-    event.target.parentElement.children[2].hidden = false;
-    let widths = event.target.parentElement.children[2].children[0].dataset.widths.split(/,/);
-    for(let i = 0; i < widths.length; i++){
-        widths[i] = Number.parseInt(widths[i]);
+// function allows roll up section content
+function rollUp(){
+    let contentContainer = event.target.parentElement.parentElement.children[1];
+    if(contentContainer.style.display == 'none'){
+        contentContainer.style.display = 'flex';
+        event.target.textContent = "▼";
     }
-    set_widths(event.target.parentElement.children[2].children[0], widths);
+    else{
+        contentContainer.style.display = 'none';
+        event.target.textContent = "◆";
+    }
 }
 
-function set_widths(element, widths){
-    for(row of element.children){
-        for(let i = 0; i < row.children.length; i++){
-            row.children[i].style.width = widths[i] / 170 * row.getClientRects()[0].width;
+// save textarea value into data-* attribute
+function dumpValue(){
+    event.target.setAttribute('data-value', event.target.value);
+}
+
+// load into all children textarea's value from special data attribute
+function loadValue(element){
+    for(let textarea of element.getElementsByTagName('textarea')){
+        let value = textarea.getAttribute('data-value');
+        if(value != null)
+            textarea.value = value;
+    }
+}
+
+// inner clipboard for element
+let clipboard = null;
+
+// copy element into clipboard
+function copyEditorElement(){
+    let target = event.target, depth=2;
+    if(event.target.parentElement.parentElement.matches('.heading')) depth = 3;
+    while(depth){
+        target = target.parentElement;
+        depth--;
+    }
+    clipboard = target.outerHTML;
+}
+
+// copy element into clipboard & remove
+function cutEditorElement(){
+    let target = event.target, depth=2;
+    if(event.target.parentElement.parentElement.matches('.heading')) depth = 3;
+    while(depth){
+        target = target.parentElement;
+        depth--;
+    }
+    clipboard = target.outerHTML;
+    target.nextSibling.remove();
+    target.remove();
+}
+
+// remove element
+function deleteEditorElement(){
+    let target = event.target, depth=2;
+    if(event.target.parentElement.parentElement.matches('.heading')) depth = 3;
+    while(depth){
+        target = target.parentElement;
+        depth--;
+    }
+    target.nextSibling.remove();
+    target.remove();
+}
+
+function openTableEditor(){
+    event.target.parentElement.children[3].hidden = false;
+}
+
+function removeTableColumn(){
+    let targetColumn = event.target.parentElement.parentElement;
+    if(targetColumn.parentElement.children.length != 1)
+        targetColumn.remove();
+}
+
+// decrease table column width
+function decreaseTableColumn(){
+    let targetColumn = event.target.parentElement.parentElement;
+    let width = Number.parseInt(targetColumn.style.width.substr(0, targetColumn.style.width.length - 1));
+    if(width != 10)
+        targetColumn.style.width = (width - 10) + '%';
+}
+
+// increase table column width
+function increaseTableColumn(){
+    let targetColumn = event.target.parentElement.parentElement, sum = 0;
+    for(let column of targetColumn.parentElement.children){
+        let width = Number.parseInt(column.style.width.substr(0, column.style.width.length - 1));
+        sum += width;
+    }
+    if(sum < 100){
+        targetColumn.style.width = (Number.parseInt(targetColumn.style.width.substr(0, targetColumn.style.width.length - 1)) + 10) + '%';
+    }
+}
+
+// handle keyframe in table cell
+function tableCellKeyframeHandler(){
+    let target = event.target, targetColumn = event.target.parentElement;
+    // Alt + Arrow*
+    if(event.altKey && /Arrow*/.test(event.code)){
+        event.preventDefault();
+        if(event.code[5] == 'L' || event.code[5] == 'R'){
+            let sum = 0;
+            for(let column of targetColumn.parentElement.children){
+                let width = Number.parseInt(column.style.width.substr(0, column.style.width.length - 1));
+                sum += width;
+            }
+            if(sum < 100){
+                let newColumn = targetColumn.cloneNode(true);
+                newColumn.style.width = '10%';
+                if(event.code[5] == 'L')
+                    targetColumn.parentElement.insertBefore(newColumn, targetColumn);
+                else
+                    targetColumn.parentElement.insertBefore(newColumn, targetColumn.nextSibling);
+            }
+            
+            return;
+        }
+        else{
+            let pos = -1, i = 0;
+            for(let c of targetColumn.children){
+                if(c == target){
+                    pos = i;
+                    break;
+                }
+                i++;
+            }
+            if(event.code[5] == 'U'){
+                for(let column of targetColumn.parentElement.children){
+                    column.children[pos].insertAdjacentHTML('beforebegin', tableCell)
+                }
+            }
+            else{
+                for(let column of targetColumn.parentElement.children){
+                    column.children[pos].insertAdjacentHTML('afterend', tableCell)
+                }
+            }
+            return;
         }
     }
+    // Alt + Delete
+    if(event.altKey && event.code == 'Delete')
+    {
+        event.preventDefault();
+        if(targetColumn.children.length < 4)
+            return;
+        let pos = -1, i = 0;
+        for(let c of targetColumn.children){
+            if(c == target){
+                pos = i;
+                break;
+            }
+            i++;
+        }
+        for(let column of targetColumn.parentElement.children){
+            column.children[pos].remove();
+        }
+        return;
+    }
 }
 
-function render_formula_preview(){
+// render latex formula
+function renderFormulaPreview(){
     let time = performance.now();
     let math = event.target.value;
+    if(!event.target.previousSibling.matches('.mini-toolbar'))
+        event.target.parentElement.children[1].remove();
+    if(math == '')
+        return;
     let node = MathJax.tex2svg(math);
-    console.log(node.clientHeight, node.clientWidth);
-    event.target.parentElement.children[0].remove();
-    event.target.parentElement.insertAdjacentHTML('afterbegin', node.outerHTML);
-    console.log(performance.now() - time);
+    event.target.parentElement.insertBefore(node, event.target);
+    console.log('Rendered formula', node.children[0].height.baseVal.value, 'x', node.children[0].width.baseVal.value, performance.now() - time, 'ms');
 }
 
-function escape_table_editor(){
+function escapeTableEditor(){
     event.target.parentElement.hidden = true;
 }
 
-let observer = new ResizeObserver(on_resize_table_cell);
-let blocked = 1, min_size = 0.2;
+let observer = new ResizeObserver(onResizeTableCell);
+let blocked = 1;
 let observable = null;
 
-function on_resize_table_cell(entry){
+// on resize table cell handler
+function onResizeTableCell(entry){
     if(blocked){
         blocked = 0;
         return;
     }
-    let a = 0;
-    for(let node of entry[0].target.parentElement.children){
-        if(node != entry[0].target){
-            node.style.height = entry[0].contentBoxSize[0].blockSize + 'px';
-            a++;
-        }
-    }
-    console.log(a);
-    let index = -1;
-    for(let i = 0; i < entry[0].target.parentElement.children.length; i++){
-        if(entry[0].target.parentElement.children[i] == entry[0].target){
-            index = i;
+    blocked = 1;
+    let pos = 0, i = 0;
+    for(let child of entry[0].target.parentElement.children){
+        if(child == entry[0].target){
+            pos = i;
             break;
         }
+        i++;
     }
-    for(let row of entry[0].target.parentElement.parentElement.children){
-        if(row.children[index] != entry[0].target){
-            row.children[index].style.width = entry[0].target.style.width;
-        }
-    }
-    let widths = [];
-    for(let child of entry[0].target.parentElement.children){
-        widths.push(Math.round(170 * child.getClientRects()[0].width / entry[0].target.parentElement.getClientRects()[0].width))
-    }
-    entry[0].target.parentElement.parentElement.dataset.widths = widths;
+    for(let column of entry[0].target.parentElement.parentElement.children)
+        column.children[pos].style.height = entry[0].borderBoxSize[0].blockSize + 'px';
+    blocked = 0;
 }
 
-function table_cell_onmousedown(){
+function tableCellOnMouseDown(){
     observer.observe(event.target);
     observable = event.target;
-    document.addEventListener('mouseup', table_cell_onmouseup);
+    document.addEventListener('mouseup', tableCellOnMouseUp);
 }
 
-function table_cell_onmouseup(){
-    blocked = 1;
+function tableCellOnMouseUp(){
     observer.unobserve(observable);
+    let pos = 0, i = 0;
+    for(let cell of observable.parentElement.children){
+        if(cell == observable){ 
+            pos = i;
+            break;
+        }
+        i++;
+    }
+    for(let column of observable.parentElement.parentElement.children)
+        column.children[pos].style.height = observable.style.height;
+    document.removeEventListener('mouseup', tableCellOnMouseUp);
     observable = null;
-    document.removeEventListener('mouseup', table_cell_onmouseup);
+    blocked = 1;
+}
+
+const svgScaleFactor = 2;
+
+class CacheWriter{
+    static paragraph(editorElement){
+        editorElement.cache = {
+            text: line_divide('\t' + editorElement.getElementsByTagName('textarea')[0].value, TimesNewRoman, 14, 481000),
+        }
+        console.log(editorElement.cache);
+    }
+
+    static codeSnippet(editorElement){
+        let caption = editorElement.getElementsByClassName('code-snippet-caption')[0];
+        let code = editorElement.getElementsByClassName('code-snippet-text')[0];
+        editorElement.cache = {
+            caption: line_divide('Листинг 0000 – ' + caption.value, TimesNewRoman, 14, 481000),
+            code: code.value.split(/[\n\r]+/),
+        }
+        console.log(editorElement.cache);
+    }
+
+    static enumeration(editorElement){
+        let textareas = [...editorElement.getElementsByClassName('enumeration-text')]
+        textareas = textareas.filter(textarea => textarea.value != '');
+        if(textareas.length < 1){
+            editorElement.cache = undefined;
+            return;
+        }
+        for(let i = 0; i < textareas.length - 1; i++)
+            textareas[i] = line_divide('\t- ' + textareas[i].value + ';', TimesNewRoman, 14, 481000);
+        textareas[textareas.length - 1] = line_divide('\t- ' + textareas[textareas.length - 1].value + '.', TimesNewRoman, 14, 481000);
+        editorElement.cache = {
+            text: textareas,
+        }
+        console.log(editorElement.cache);
+    }
+
+    static image(editorElement){
+        let img = editorElement.getElementsByClassName('image-preview')[0];
+        if(img.src == '' || img.src[0] == 'f'){
+            editorElement.cache = undefined;
+            return;
+        }
+        let caption = editorElement.getElementsByClassName('image-caption-text')[0].value;
+        editorElement.cache = {
+            src: img.src,
+            caption: line_divide('Рисунок 0000 – ' + caption, TimesNewRoman, 14, 481000),
+            width: img.naturalWidth,
+            height: img.naturalHeight,
+        }
+        console.log(editorElement.cache);
+    }
+
+    static table(editorElement){
+        let area = editorElement.getElementsByClassName('table-area')[0], rows = [];
+        for(let i = 0; i < area.children[0].children.length - 1; i++){
+            rows.push([]);
+        }
+        for(let j =0; j < area.children.length; j++){
+            let percentage = Number.parseInt(area.children[j].style.width);
+            let width = percentage * 17 / 10;
+            width = convert_millimeters(width);
+            for(let i = 1; i < area.children[j].children.length; i++){
+                rows[i - 1][j] = line_divide(area.children[j].children[i].value, TimesNewRoman, 12, width);
+            }
+        }
+        let caption = editorElement.getElementsByClassName('table-caption')[0];
+        editorElement.cache = {
+            rows: rows,
+            caption: line_divide('Таблица 0000 – ' + caption.value, TimesNewRoman, 14, 481000),
+        }
+        console.log(editorElement.cache);
+    }
+
+    static section(editorElement){
+        let textarea = editorElement.getElementsByClassName('heading-text')[0];
+        editorElement.cache = {
+            text: line_divide('\t00.00.00.00 '+ textarea.value, TimesNewRomanBold, 14, 481000),
+        }
+        console.log(editorElement.cache);
+    }
+
+    static formula(editorElement){
+        let math = editorElement.getElementsByClassName('formula-text')[0].value;
+        if(value == '')
+        {
+            editorElement.cache = undefined;
+            return;
+        }
+        let svg = editorElement.getElementsByTagName('svg');
+        let svgData = new XMLSerializer().serializeToString(svg);
+        let canvas = document.createElement('canvas');
+        let context = canvas.getContext('2d');
+        canvas.setAttribute('width', svg.width.baseVal.value * svgScaleFactor);
+        canvas.setAttribute('height', svg.height.baseVal.value * svgScaleFactor);
+        let img = document.createElement('img');
+        img.setAttribute('src', 'data:image/svg+xml;base64,' + btoa(svgData));
+        img.onload = function(){
+            context.drawImage(img, 0, 0, svg.width.baseVal.value * svgScaleFactor, svg.height.baseVal.value * svgScaleFactor);
+            editorElement.cache = {
+                png: canvas.toDataURL('image/png'),
+                math: math,
+            }
+        }
+    }
 }

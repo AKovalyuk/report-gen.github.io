@@ -4,7 +4,6 @@ def run(server_class=ThreadingHTTPServer, handler_class=SimpleHTTPRequestHandler
     handler_class.extensions_map.update({
         ".js": "application/javascript",
     })
-    print(handler_class.extensions_map)
     server_address = ('', 8080)
     httpd = server_class(server_address, handler_class)
     httpd.serve_forever()

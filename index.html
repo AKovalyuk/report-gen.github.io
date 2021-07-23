@@ -14,67 +14,33 @@
         <script src="./scripts/editor.js"></script>
     </head>
     <body>
+        <div id="preview"></div>
         <div id="editor">
             <div class="structure-element" id="title" hidden></div>
             <div class="structure-element" id="essay" hidden></div>
             <div class="structure-element" id="table-of-contents" hidden></div>
             <div class="structure-element" id="introduction" hidden>
                 <div class="editor-panel">ВВЕДЕНИЕ</div>
-                <div class="insert insert-nosections" onclick="show_buttons();" onmouseleave="hide_buttons();"></div>
+                <div class="insert" onclick="showButtons();" onmouseleave="hideButtons();"></div>
             </div>
             <div class="structure-element" id="main">
-                <div class="insert" onclick="show_buttons();" onmouseleave="hide_buttons();"></div>
+                <div class="insert" onclick="showButtons();" onmouseleave="hideButtons();"></div>
             </div>
             <div class="structure-element" id="conclusion" hidden></div>
             <div class="structure-element" id="abbr-list" hidden></div>
             <div class="structure-element" id="source-list" hidden></div>
         </div>
         <div id="header">
-            <div class="dropdown" id="dropdown-select-structure-element" onclick="dropdown_controller();">
-                Основная часть
-                <div class="dropdown-container" hidden>
-                    <div class="dropdown-element">
-                        <div class="dropdown-element-button" onclick="change_structure_element('title'); reset_dropdown_name('dropdown-select-structure-element');">Титульный лист</div>
-                        <input class="select-structure-element" type="checkbox">
-                    </div>
-                    <div class="dropdown-separator"></div>
-                    <div class="dropdown-element">
-                        <div class="dropdown-element-button" onclick="change_structure_element('essay'); reset_dropdown_name('dropdown-select-structure-element');">Реферат</div>
-                        <input class="select-structure-element" type="checkbox">
-                    </div>
-                    <div class="dropdown-separator"></div>
-                    <div class="dropdown-element">
-                        <div class="dropdown-element-button" onclick="change_structure_element('table-of-contents'); reset_dropdown_name('dropdown-select-structure-element');">Содержание</div>
-                        <input class="select-structure-element" type="checkbox">
-                    </div>
-                    <div class="dropdown-separator"></div>
-                    <div class="dropdown-element">
-                        <div class="dropdown-element-button" onclick="change_structure_element('introduction'); reset_dropdown_name('dropdown-select-structure-element');">Введение</div>
-                        <input class="select-structure-element" type="checkbox">
-                    </div>
-                    <div class="dropdown-separator"></div>
-                    <div class="dropdown-element">
-                        <div class="dropdown-element-button" onclick="change_structure_element('main'); reset_dropdown_name('dropdown-select-structure-element');">Основная часть</div>
-                    </div>
-                    <div class="dropdown-separator"></div>
-                    <div class="dropdown-element">
-                        <div class="dropdown-element-button" onclick="change_structure_element('conclusion'); reset_dropdown_name('dropdown-select-structure-element');">Заключение</div>
-                        <input class="select-structure-element" type="checkbox">
-                    </div>
-                    <div class="dropdown-separator"></div>
-                    <div class="dropdown-element">
-                        <div class="dropdown-element-button" onclick="change_structure_element('abbr-list'); reset_dropdown_name('dropdown-select-structure-element');">Список сокращений</div>
-                        <input class="select-structure-element" type="checkbox">
-                    </div>
-                    <div class="dropdown-separator"></div>
-                    <div class="dropdown-element">
-                        <div class="dropdown-element-button" onclick="change_structure_element('source-list'); reset_dropdown_name('dropdown-select-structure-element');">Список источников</div>
-                        <input class="select-structure-element" type="checkbox">
-                    </div>
-                </div>
-            </div>
+            <select class="dropdown" id="dropdown-select-structure-element" 
+            onchange="changeStructureElement(this.selectedOptions[0].getAttribute('name'));">
+                <option name="title">Титульный лист</option>
+                <option name="essay">Реферат</option>
+                <option name="table-of-contents">Содержание</option>
+                <option name="introduction">Введение</option>
+                <option name="main" selected>Основная часть</option>
+                <option name="conclusion">Заключение</option>
+                <option name="abbr-list">Список сокращений</option>
+                <option name="source-list">Список источников</option>
         </div>
-        <div id="preview"></div>
-        
     </body>
 </html>

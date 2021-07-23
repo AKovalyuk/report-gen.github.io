@@ -1,126 +1,26 @@
-/* LAYOUT */
-/* Contaner for other elements like image, text, ... */
-#editor_element{ 
-    width: 100%;
-    height: max-content;
-}
-/* Special element, locates among #editor_element's */
 .insert{
     display: flex;
-    width: 95%;
-    min-height: 2px;
+    width: 100%;
+    min-height: 5px;
     height: max-content;
     margin-top: 5px;
-    margin-bottom: 5px;
     margin-left: auto;
     margin-right: auto;
     flex-wrap: wrap;
     justify-content: center;
+    border-top: lightskyblue 2px solid;
 }
 .structure-element{
     height: max-content;
     width: 100%;
 }
-/* Debugging element*/
-.sample-block{
-    width: 98%;
-    height: 130px;
-    margin-left: auto;
-    margin-right: auto;
-}
-.paragraph{
-    width: 98%;
-    height: max-content;
-    margin-left: auto;
-    margin-right: auto;
-}
-.paragraph-text{
-    width: 94%;
-    margin-left: 3%;
-    min-height: 150px;
-    resize: vertical;
-    margin-top: 8px;
-    margin-bottom: 8px;
-}
-.section{
-    width: 100%;
-    height: max-content;
-}
-.heading{
-    width: 98%;
-    margin-left: 1%;
-    height: max-content;
-}
-.heading-text{
-    width: 94%;
-    margin-left: 3%;
-    min-height: 30px;
-    resize: vertical;
-    margin-top: 3px;
-    margin-bottom: 3px;
-}
-.section-content{
-    width: 98%;
-    margin-left: auto;
-    margin-right: auto;
-    height: max-content;
-}
 .add-button{
     display: flex;
     width: 30px;
     height: 30px;
-    margin-left: 5px;
-    margin-right: 5px;
-}
-.editor-panel{
-    height: max-content;
-    padding: 10px;
-}
-.code-snippet{
-    width: 98%;
-    height: max-content;
-    margin-left: auto;
-    margin-right: auto;
-}
-.code-snippet-caption{
-    width: 94%;
-    margin-left: 3%;
-    min-height: 30px;
-    resize: vertical;
-    margin-top: 6px;
-    margin-bottom: 0px;
-}
-.code-snippet-text{
-    width: 94%;
-    margin-left: 3%;
-    min-height: 150px;
-    resize: vertical;
-    margin-top: 6px;
-    margin-bottom: 6px;
-}
-.enumeration{
-    width: 98%;
-    height: max-content;
-    margin-left: auto;
-    margin-right: auto;
-}
-.enumeration-text{
-    width: 94%;
-    height: 25px;
-    margin-left: 3%;
-    resize: vertical;
-    margin-top: 6px;
-    margin-bottom: 6px;
-}
-.image{
-    width: 98%;
-    height: max-content;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 5px;
 }
 .image-load{
-    margin-left: 3%;
-    margin-right: 3%;
     margin-top: 6px;
     display: inline-block;
 }
@@ -133,151 +33,138 @@
     margin-top: 6px;
     margin-bottom: 6px;
 }
-.image-caption-text{
-    width: 94%;
-    height: 25px;
-    margin-left: 3%;
-    resize: vertical;
-    margin-top: 6px;
-    margin-bottom: 6px;
+.mini-toolbar{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 5px;
+    width: 100%;
 }
-.image-remove{
-    float: right;
-    margin-left: auto;
-    margin-right: 3%;
-    margin-left: 3%;
-    margin-top: 6px;
-}
-.table{
-    width: 98%;
-    height: max-content;
-    margin-left: auto;
-    margin-right: auto;
-}
-.button-open-table-editor{
-    margin-top: 8px;
-    margin-bottom: 8px;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+.mini-toolbar-button{
+    width: 24px;
+    height: 24px;
+    margin: 5px;
+    border: none;
+    padding: 0;
     font-size: 1.2em;
-}
-.table-caption{
-    width: 94%;
-    height: 25px;
-    margin-left: 3%;
-    resize: vertical;
-    margin-top: 6px;
-    margin-bottom: 6px;
-}
-.formula{
-    width: 98%;
-    height: max-content;
-    margin-left: auto;
-    margin-right: auto;
-}
-.formula-text{
-    width: 94%;
-    height: 25px;
-    margin-left: 3%;
-    resize: vertical;
-    margin-top: 6px;
-    margin-bottom: 6px;
-}
-
-/* PERSONALITY */
-.insert{
-    background-color: lightskyblue;
+    text-align: center;
+    border-radius: 5px;
 }
 .insert:hover{
-    background-color: inherit;
-}
-.sample-block{
-    background-color: white;
-    border-radius: 5px;
-    border: black solid 1.5px;
-}
-.paragraph{
-    background-color: white;
-    border-radius: 5px;
-    border: black solid 1.5px;
-}
-.paragraph-text{
-    background-color: rgb(223, 223, 223);
-    border-radius: 5px;
-    border: black solid 1.5px;
-}
-.heading{
-    background-color: white;
-    border-radius: 5px;
-    border: black solid 1.5px;
-}
-.heading-text{
-    background-color: rgb(223, 223, 223);
-    border-radius: 5px;
-    border: black solid 1.5px;
+    border-top: 2px #d4d4d4 solid;
 }
 .add-button{
     background-color: white;
     border-radius: 5px;
     border: grey solid 1.5px;
 }
-.editor-panel{
-    background-color: white;
-    border: black solid 1.5px;
+textarea{
+    outline: none;
+    border: none;
+    background-color: lightgray;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: 'Open Sans';
+    font-size: 1.2em;
 }
-.code-snippet{
-    background-color: white;
-    border-radius: 5px;
-    border: black solid 1.5px;
-}
-.code-snippet-caption{
-    background-color: rgb(223, 223, 223);
-    border-radius: 5px;
-    border: black solid 1.5px;
-}
-.code-snippet-text{
-    background-color: rgb(223, 223, 223);
-    border-radius: 5px;
-    border: black solid 1.5px;
-}
-.enumeration{
-    background-color: white;
-    border-radius: 5px;
-    border: black solid 1.5px;
+.paragraph-text{
+    resize: vertical;
+    width: 100%;
+    min-height: 120px;
+    text-indent: 2em;
 }
 .enumeration-text{
-    background-color: rgb(223, 223, 223);
-    border-radius: 5px;
-    border: black solid 1.5px;
+    width: 100%;
+    resize: vertical;
+    margin-bottom: 6px;
 }
-.image{
-    background-color: white;
-    border-radius: 5px;
-    border: black solid 1.5px;
+.code-snippet-caption{
+    width: 100%;
+    resize: vertical;
+    margin-bottom: 6px;
+}
+.code-snippet-text{
+    resize: vertical;
+    width: 100%;
+    min-height: 120px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+}
+.image-remove{
+    float: right;
+    margin-top: 6px;
 }
 .image-caption-text{
-    background-color: rgb(223, 223, 223);
-    border-radius: 5px;
-    border: black solid 1.5px;
-}
-.table{
-    background-color: white;
-    border-radius: 5px;
-    border: black solid 1.5px;
+    width: 100%;
+    resize: vertical;
+    margin-top: 6px;
 }
 .table-caption{
-    background-color: rgb(223, 223, 223);
-    border-radius: 5px;
-    border: black solid 1.5px;
+    width: 100%;
+    resize: vertical;
+    margin-bottom: 6px;
 }
-.formula{
-    background-color: white;
-    border-radius: 5px;
-    border: black solid 1.5px;
+.button-open-table-editor{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 200px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.2em;
 }
 .formula-text{
-    background-color: rgb(223, 223, 223);
-    border-radius: 5px;
-    border: black solid 1.5px;
+    resize: vertical;
+    width: 100%;
+}
+.content-container{
+    display: flex;
+}
+.v-line{
+    display: inline-block;
+    justify-self: stretch;
+    border-left: 2px orange solid;
+    width: 0;
+    margin: 6px;
+}
+.section-content{
+    display: inline-block;
+    width: calc(100% - 6px);
+    height: max-content;
+}
+.heading-text{
+    display: inline-block;
+    width: calc(100% - 35px);
+    resize: vertical;
+}
+.roll-up{
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+    vertical-align: top;
+    text-align: center;
+    font-size: 1.2em;
+    padding: 0;
+    border: none;
+    background-color: inherit;
+}
+.editor-element{
+    width: calc(100% - 16px);
+    padding: 8px;
+    background-color: white;
+    border-radius: 10px;
+    border: none;
+}
+.keyframe{
+    display: inline-block;
+    padding: 2px;
+    border-radius: 3px;
+    background-color: white;
+    color: black;
+    margin: 3px;
+}
+.table-editor-hint{
+    color: white;
+    padding: 5px;
+    box-sizing: border-box;
 }

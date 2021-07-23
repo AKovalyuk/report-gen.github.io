@@ -1,35 +1,12 @@
 /* LAYOUT */
 .dropdown{
     width: 225px;
-    height: 30px;
+    height: 40px;
     float: left;
     margin-left: 10px;
     user-select: none;
     font-size: 1.5em;
     padding: 5px;
-}
-.dropdown-container{
-    width: max-content;
-    height: max-content;
-    position: relative;
-    top: 30%;
-    z-index: -1;
-}
-.dropdown-separator{
-    height: 1px;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-}
-.dropdown-element{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px;
-}
-.select-structure-element{
-    width: 1.5em;
-    height: 1.5em;
 }
 
 /* PERSONALITY */
@@ -37,17 +14,4 @@
     background-color: white;
     border: black solid 1.5px;
     border-radius: 5px;
-}
-.dropdown-container{
-    background-color: white;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 5px;
-    border: solid black 1.5px;
-}
-.dropdown-separator{
-    background-color: rgb(177, 177, 177);
-}
-.dropdown-element-button:hover{
-    background-color: lightgray;
 }

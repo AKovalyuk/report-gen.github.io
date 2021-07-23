@@ -13,9 +13,10 @@
     position: absolute;
     top: 10%;
     width: 70%;
-    min-height: 100%;
+    min-height: 90%;
     height: max-content;
     margin-left: 15%;
+    display: flex;
 }
 .table-editor-apply{
     position: fixed;
@@ -25,14 +26,31 @@
     bottom: 2.5%;
     right: 2.5%;
 }
-.table-row{
-    display: flex;
-    flex-wrap: nowrap;
-    width: 100%;
-    min-height: 30px;
+.table-editor-hint{
+    position: absolute;
+    top: 10%;
+    left: 85%;
+    width: 15%;
+    min-height: 90%;
+    height: max-content;
+}
+.table-column{
+    display: block;
+    box-sizing: border-box;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 .table-cell{
-    overflow: hidden;
-    min-width: 20%;
-    min-height: 40px;
+    box-sizing: border-box;
+    background-color: white;
+    resize: vertical;
+    border-radius: 0;
+    border: 1px black solid;
+    display: block;
+    width: 100%;
+    min-height: 50px;
+}
+.button-delete-column{
+    display: block;
+    margin: 0 auto;
 }
