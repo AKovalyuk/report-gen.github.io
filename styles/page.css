@@ -14,7 +14,8 @@
     top: 11%;
     left: 0.5%;
     width: 50.5%;
-    min-height: 89%;
+    min-height: calc(89% - 200px);
+    padding-bottom: 200px;
 }
 #preview{
     position: fixed;
@@ -31,9 +32,63 @@
 }
 #preview{
     background-color: white;
+    border-width: 0px;
 }
 body{
     background-color: #d4d4d4;
 }
-
-
+#introduction::before{
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid black;
+    background-color: white;
+    content: "ВВЕДЕНИЕ";
+    text-align: center;
+    padding: 10px;
+    font-size: 1.2em;
+}
+#conclusion::before{
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid black;
+    background-color: white;
+    content: "ЗАКЛЮЧЕНИЕ";
+    text-align: center;
+    padding: 10px;
+    font-size: 1.2em;
+}
+#essay::before{
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid black;
+    background-color: white;
+    content: "РЕФЕРАТ";
+    text-align: center;
+    padding: 10px;
+    font-size: 1.2em;
+}
+#abbr-list::before{
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid black;
+    background-color: white;
+    content: "СПИСОК СОКРАЩЕНИЙ";
+    text-align: center;
+    padding: 10px;
+    font-size: 1.2em;
+}
+#source-list::before{
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid black;
+    background-color: white;
+    content: "СПИСОК ИСТОЧНИКОВ";
+    text-align: center;
+    padding: 10px;
+    font-size: 1.2em;
+}

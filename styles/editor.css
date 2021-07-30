@@ -29,7 +29,6 @@
     width: 94%;
     margin-left: 3%;
     height: unset;
-    resize: vertical;
     margin-top: 6px;
     margin-bottom: 6px;
 }
@@ -167,4 +166,14 @@ textarea{
     color: white;
     padding: 5px;
     box-sizing: border-box;
+}
+.formula-png{
+    display: block;
+    max-width: 94%;
+    margin-left: 3%;
+    height: auto;
+    height: auto;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    max-height: 400px;
 }

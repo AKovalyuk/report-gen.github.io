@@ -8,25 +8,30 @@
         <link rel="stylesheet" type="text/css" href="styles/ui_elements.css">
         <link rel="stylesheet" type="text/css" href="styles/table-editor.css">
         <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-        <script src="https://rawgit.com/marcj/css-element-queries/master/src/ResizeSensor.js"></script>
         <script src="./scripts/font_metrics.js"></script>
         <script src="./scripts/templates.js"></script>
         <script src="./scripts/editor.js"></script>
+        <script src="./scripts/assembler.js"></script>
+        <script src="./scripts/preview.js"></script>
     </head>
     <body>
-        <div id="preview"></div>
+        <iframe id="preview" src="./preview.html">
+        </iframe>
         <div id="editor">
             <div class="structure-element" id="title" hidden></div>
-            <div class="structure-element" id="essay" hidden></div>
+            <div class="structure-element" id="essay" hidden>
+                <div class="insert insert-nosections" onclick="showButtons();" onmouseleave="hideButtons();"></div>
+            </div>
             <div class="structure-element" id="table-of-contents" hidden></div>
             <div class="structure-element" id="introduction" hidden>
-                <div class="editor-panel">ВВЕДЕНИЕ</div>
-                <div class="insert" onclick="showButtons();" onmouseleave="hideButtons();"></div>
+                <div class="insert insert-nosections" onclick="showButtons();" onmouseleave="hideButtons();"></div>
             </div>
             <div class="structure-element" id="main">
                 <div class="insert" onclick="showButtons();" onmouseleave="hideButtons();"></div>
             </div>
-            <div class="structure-element" id="conclusion" hidden></div>
+            <div class="structure-element" id="conclusion" hidden>
+                <div class="insert insert-nosections" onclick="showButtons();" onmouseleave="hideButtons();"></div>
+            </div>
             <div class="structure-element" id="abbr-list" hidden></div>
             <div class="structure-element" id="source-list" hidden></div>
         </div>

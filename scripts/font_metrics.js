@@ -91,6 +91,8 @@ function line_divide(text, font, fontsize, width){
     words = words.filter((str) => 
         str.length != 0
     );
+    if(words.length == 0)
+        return [""];
     if(text[0] == '\t'){
         words[0] = '\t' + words[0];
     }
@@ -112,9 +114,9 @@ function line_divide(text, font, fontsize, width){
                         current_len = 0;
                     }
                     strings[strings.length - 1][0] += litera;
-                    current_len += litera * fontsize;
+                    current_len += litera_len * fontsize;
                 }
-                lines += strings;
+                lines = lines.concat(strings);
                 current_line_len = current_len;
             }
             else{

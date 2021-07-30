@@ -12,12 +12,13 @@ function showButtons(evt){
         if(el.matches('.section'))
             sections += 1;
     }
+    let textOnly = document.getElementById('conclusion').contains(evt) || document.getElementById('introduction').contains(evt) || document.getElementById('essay').contains(evt);
     editorElements = (evt.parentElement.children.length - 1) / 2 - sections;
     if(sections == 0){
         // TODO text only elements
-        newHTML += buttonAddTable + buttonAddCodeSnippet + buttonAddFormula + 
-        buttonAddImage + buttonAddParagraph + buttonAddEnumeration;
-        if(clipboard != null)
+        newHTML += (!textOnly ? buttonAddTable + buttonAddCodeSnippet + buttonAddFormula + 
+        buttonAddImage : '') + buttonAddParagraph + buttonAddEnumeration;
+        if(clipboard != null && !textOnly)
             newHTML += buttonFromPaste;
     }
     if(editorElements == 0){
@@ -29,7 +30,7 @@ function showButtons(evt){
             el = el.parentElement;
         }
         if(sectionLevel < 4 && !evt.matches('.insert-nosections'))
-            newHTML += buttonAddSection;
+            newHTML = buttonAddSection + newHTML;
     }
     evt.innerHTML = newHTML;
 }
@@ -320,25 +321,46 @@ function tableCellKeyframeHandler(){
     }
 }
 
+const svgScaleFactor = 4;
+
 // render latex formula
 function renderFormulaPreview(){
     let time = performance.now();
     let math = event.target.value;
     if(!event.target.previousSibling.matches('.mini-toolbar'))
         event.target.parentElement.children[1].remove();
-    if(math == '')
+    if(math == ''){
+        event.target.parentElement.cache = null;
         return;
+    }
     let node = MathJax.tex2svg(math);
     event.target.parentElement.insertBefore(node, event.target);
-    console.log('Rendered formula', node.children[0].height.baseVal.value, 'x', node.children[0].width.baseVal.value, performance.now() - time, 'ms');
+    let svg = node.children[0];
+    let svgData = new XMLSerializer().serializeToString(svg);
+    let canvas = document.createElement('canvas');
+    let context = canvas.getContext('2d');
+    canvas.setAttribute('width', svg.width.baseVal.value * svgScaleFactor);
+    canvas.setAttribute('height', svg.height.baseVal.value * svgScaleFactor);
+    let img = document.createElement('img');
+    img.setAttribute('src', 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData))));
+    img.onload = function(){
+        context.drawImage(img, 0, 0, svg.width.baseVal.value * svgScaleFactor, svg.height.baseVal.value * svgScaleFactor);
+        png = '<img class="formula-png" onload="CacheWriter.formula(event.target.parentElement);" src="' + canvas.toDataURL( "image/png" ) + '"></img>';
+        node.insertAdjacentHTML('afterend', png);
+        node.remove();
+        console.log('Rendered formula:', performance.now() - time, 'ms')
+    }
 }
 
 function escapeTableEditor(){
     event.target.parentElement.hidden = true;
 }
 
+// Resize observer for textarea (table cell)
 let observer = new ResizeObserver(onResizeTableCell);
+// state variable to prevent first activation of resize observer
 let blocked = 1;
+// reference for current observable object
 let observable = null;
 
 // on resize table cell handler
@@ -361,12 +383,14 @@ function onResizeTableCell(entry){
     blocked = 0;
 }
 
+// register observer for textarea
 function tableCellOnMouseDown(){
     observer.observe(event.target);
     observable = event.target;
     document.addEventListener('mouseup', tableCellOnMouseUp);
 }
 
+// unregister observer for textarea
 function tableCellOnMouseUp(){
     observer.unobserve(observable);
     let pos = 0, i = 0;
@@ -384,8 +408,7 @@ function tableCellOnMouseUp(){
     blocked = 1;
 }
 
-const svgScaleFactor = 2;
-
+// this class contains static functions that creates cache for editor elements
 class CacheWriter{
     static paragraph(editorElement){
         editorElement.cache = {
@@ -408,7 +431,7 @@ class CacheWriter{
         let textareas = [...editorElement.getElementsByClassName('enumeration-text')]
         textareas = textareas.filter(textarea => textarea.value != '');
         if(textareas.length < 1){
-            editorElement.cache = undefined;
+            editorElement.cache = null;
             return;
         }
         for(let i = 0; i < textareas.length - 1; i++)
@@ -423,7 +446,7 @@ class CacheWriter{
     static image(editorElement){
         let img = editorElement.getElementsByClassName('image-preview')[0];
         if(img.src == '' || img.src[0] == 'f'){
-            editorElement.cache = undefined;
+            editorElement.cache = null;
             return;
         }
         let caption = editorElement.getElementsByClassName('image-caption-text')[0].value;
@@ -437,13 +460,14 @@ class CacheWriter{
     }
 
     static table(editorElement){
-        let area = editorElement.getElementsByClassName('table-area')[0], rows = [];
+        let area = editorElement.getElementsByClassName('table-area')[0], rows = [], widths = [];
         for(let i = 0; i < area.children[0].children.length - 1; i++){
             rows.push([]);
         }
         for(let j =0; j < area.children.length; j++){
             let percentage = Number.parseInt(area.children[j].style.width);
             let width = percentage * 17 / 10;
+            widths.push(width);
             width = convert_millimeters(width);
             for(let i = 1; i < area.children[j].children.length; i++){
                 rows[i - 1][j] = line_divide(area.children[j].children[i].value, TimesNewRoman, 12, width);
@@ -453,6 +477,7 @@ class CacheWriter{
         editorElement.cache = {
             rows: rows,
             caption: line_divide('Таблица 0000 – ' + caption.value, TimesNewRoman, 14, 481000),
+            widths: widths,
         }
         console.log(editorElement.cache);
     }
@@ -467,25 +492,93 @@ class CacheWriter{
 
     static formula(editorElement){
         let math = editorElement.getElementsByClassName('formula-text')[0].value;
-        if(value == '')
-        {
-            editorElement.cache = undefined;
+        let png = editorElement.getElementsByClassName('formula-png')[0];
+        if(png == undefined){
+            editorElement.cache = null;
             return;
         }
-        let svg = editorElement.getElementsByTagName('svg');
-        let svgData = new XMLSerializer().serializeToString(svg);
-        let canvas = document.createElement('canvas');
-        let context = canvas.getContext('2d');
-        canvas.setAttribute('width', svg.width.baseVal.value * svgScaleFactor);
-        canvas.setAttribute('height', svg.height.baseVal.value * svgScaleFactor);
-        let img = document.createElement('img');
-        img.setAttribute('src', 'data:image/svg+xml;base64,' + btoa(svgData));
-        img.onload = function(){
-            context.drawImage(img, 0, 0, svg.width.baseVal.value * svgScaleFactor, svg.height.baseVal.value * svgScaleFactor);
-            editorElement.cache = {
-                png: canvas.toDataURL('image/png'),
-                math: math,
-            }
+        editorElement.cache = {
+            png: png.src, 
+            math: math,
+            width: png.naturalWidth,
+            height: png.naturalHeight,
+        }
+        console.log(editorElement.cache);
+    }
+}
+
+// collect data from other container (main part in editor for example)
+function collectFromContainer(container){
+    let elements = [];
+    for(let element of container.children){
+        if(element.matches('.insert'))
+            continue;
+        if(element.matches('.section')){
+            if(element.cache === undefined)
+                CacheWriter.section(element);
+            elements.push(Object.assign(element.cache, {type: 'section', node: element, elements: collectFromContainer(element.children[1].children[1])}));
+            continue;
+        }
+        if(element.matches('.enumeration')){
+            if(element.cache === undefined)
+                CacheWriter.enumeration(element);
+            if(element.cache === null)
+                continue;
+            elements.push(Object.assign(element.cache, {type: 'enumeration', node: element}));
+            continue;
+        }
+        if(element.matches('.paragraph')){
+            if(element.cache === undefined)
+                CacheWriter.paragraph(element);
+            elements.push(Object.assign(element.cache, {type: 'paragraph', node: element}));
+            continue;
+        }
+        if(element.matches('.code-snippet')){
+            if(element.cache === undefined)
+                CacheWriter.codeSnippet(element);
+            elements.push(Object.assign(element.cache, {type: 'snippet', node: element}));
+            continue;
+        }
+        if(element.matches('.image')){
+            if(element.cache === undefined)
+                CacheWriter.image(element);
+            if(element.cache === null)
+                continue;
+            elements.push(Object.assign(element.cache, {type: 'image', node: element}));
+            continue;
+        }
+        if(element.matches('.formula')){
+            if(element.cache === undefined)
+                CacheWriter.formula(element);
+            if(element.cache === null)
+                continue;
+            elements.push(Object.assign(element.cache, {type: 'formula', node: element}));
+            continue;
+        }
+        if(element.matches('.table')){
+            if(element.cache === undefined)
+                CacheWriter.table(element);
+            elements.push(Object.assign(element.cache, {type: 'table', node: element}));
+            continue;
         }
     }
+    return elements;
+}
+
+function collect(){
+    return {main: collectFromContainer(document.getElementById('main'))};
+}
+
+function onPreviewResize(){
+    let preview = document.getElementById('preview');
+    let body = preview.contentDocument.body, bodyWidth = body.scrollWidth, frameWidth = preview.offsetWidth;
+    let scaleFactor = (frameWidth - 17) / bodyWidth;
+    body.style.transform = `scale(${scaleFactor})`;
+    body.style.transformOrigin = '0 0';
+    renderCheck(preview.contentDocument.body);
+}
+
+let previewResizeObserver = new ResizeObserver(onPreviewResize);
+window.onload = function(){
+    previewResizeObserver.observe(document.getElementById('preview'));
 }

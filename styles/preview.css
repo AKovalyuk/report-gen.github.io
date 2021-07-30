@@ -1,0 +1,72 @@
+body{
+    background-color: #d4d4d4;
+    border-width: 0px;
+    margin: 0px;
+    width: 212mm;
+}
+.page{
+    width: 210mm;
+    height: 297mm;
+    background-color: white;
+    padding: 2cm 1cm 2cm 3cm;
+    margin-top: 5mm;
+    box-sizing: border-box;
+}
+.paragraph{
+    font-family: 'Times New Roman', serif;
+    font-size: 14pt;
+    line-height: 17pt;
+    text-align-last: justify;
+}
+.image{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+.heading{
+    font-family: 'Times New Roman', serif;
+    font-size: 14pt;
+    line-height: 17pt;
+    text-align-last: justify;
+    font-weight: bold;
+}
+.image-caption{
+    font-family: 'Times New Roman', serif;
+    font-size: 14pt;
+    line-height: 17pt;
+    text-align-last: center;
+}
+.caption{
+    font-family: 'Times New Roman', serif;
+    font-size: 14pt;
+    line-height: 17pt;
+}
+.snippet{
+    font-family: 'Courier New';
+    font-size: 10pt;
+    line-height: 12pt;
+    white-space: pre;
+}
+.formula{
+    margin-left: 12.5mm;
+    display: block;
+}
+td{
+    border: 0.5pt solid black;
+    border-top: none;
+    height: 14pt;
+    box-sizing: border-box;
+    text-align: center;
+}
+.table-header{
+    border-top: 0.5pt solid black;
+}
+table{
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-size: 12pt;
+    line-height: 14pt;
+}
+.wrap{
+    
+}
