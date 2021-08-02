@@ -56,7 +56,7 @@
     border-radius: 5px;
     border: grey solid 1.5px;
 }
-textarea{
+textarea, div[contenteditable="true"]{
     outline: none;
     border: none;
     background-color: lightgray;
@@ -176,4 +176,13 @@ textarea{
     margin-top: 6px;
     margin-bottom: 6px;
     max-height: 400px;
+}
+.form-textarea{
+    width: 100%;
+    margin-top: 8px;
+    resize: vertical;
+    min-height: 1.6em;
+}
+.form-textarea:nth-child(1){
+    margin-top: 0;
 }

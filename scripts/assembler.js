@@ -39,11 +39,14 @@ function upd(){
 }
 
 function build(uiData){
-    let main = uiData.main;
-    let pos = new Position();
-    result = [];
-    buildSequence(main, result, pos);
-    return packPages(result);
+    let main = uiData.main, essay = uiData.essay, introduction = uiData.introduction, conclusion = uiData.conclusion;
+    let introductionPos = new Position(), introductionResult = [];
+    buildSequence((introduction.length > 0 ? [{type: 'title', text: 'ВВЕДЕНИЕ'}] : []).concat(introduction), introductionResult, introductionPos);
+    let mainPos = new Position(), mainResult = [];
+    buildSequence(main, mainResult, mainPos);
+    let conclusionPos = new Position(), conclusionResult = [];
+    buildSequence((conclusion.length > 0 ? [{type: 'title', text: 'ЗАКЛЮЧЕНИЕ'}] : []).concat(conclusion), conclusionResult, conclusionPos);
+    return packPages(introductionResult).concat(packPages(mainResult).concat(packPages(conclusionResult)));
 }
 
 class Position{
@@ -153,11 +156,12 @@ function insertTable(element, output, pos){
             break;
         }
     }
+    pos.table++;
     pos.spacingBefore = TABLE_AFTER;
 }
 
 function insertrHeader(element, output, pos){
-    let spacingBefore = Math.max(pos.spacingBefore, HEADING_BEFORE);
+    let spacingBefore = (pos.nestingLevel == 0 && pos.chapter == 1) ? 0 : Math.max(pos.spacingBefore, HEADING_BEFORE);
     let chapterName = [...element.text];
     let nestingLevel = pos.nestingLevel, numbering = '';
     if(nestingLevel == 0){
@@ -176,7 +180,7 @@ function insertrHeader(element, output, pos){
         throw Error(`${numbering}: Слишком много строк в заголовке`)
     }
     chapterName[0] = numbering + chapterName[0].slice(12);
-    if(TNR_14PT_HEIGHT * chapterName + spacingBefore >= PAGE_HEIGHT - pos.position){
+    if(TNR_14PT_HEIGHT * chapterName.length + spacingBefore >= PAGE_HEIGHT - pos.position){
         output.push({type: 'pb'});
         pos.pageNumber += 1;
         pos.position = 0;
@@ -191,6 +195,21 @@ function insertrHeader(element, output, pos){
     pos.nestingLevel += 1;
     buildSequence(element.elements, output, pos);
     pos.nestingLevel -= 1;
+    if(nestingLevel == 0){
+        pos.chapter++;
+        pos.subsection = pos.subchapter = pos.section = 1;
+    }
+    if(nestingLevel == 1){
+        pos.subchapter++;
+        pos.section = pos.subsection = 1;
+    }
+    if(nestingLevel == 2){
+        pos.section++;
+        pos.subsection = 1;
+    }
+    if(nestingLevel == 3){
+        pos.subsection++;
+    }
 }
 
 function insertImage(element, output, pos){
@@ -213,6 +232,7 @@ function insertImage(element, output, pos){
         output.push({type: 'image', width: destWidth, height: destHeight, caption: caption, src: element.src, sb: spacingBefore});
     }
     pos.spacingBefore = PICTURE_TEXT_AFTER;
+    pos.image++;
 }
 
 function insertEnumeration(element, output, pos){
@@ -220,10 +240,15 @@ function insertEnumeration(element, output, pos){
     for(let i = 0; i < element.text.length; i++){
         let el = element.text[i];
         if(pos.position + el.length * TNR_14PT_HEIGHT + (i == 0 ? spacingBefore : 0) >= PAGE_HEIGHT){
-            output.push({type: 'pb'});
-            pos.pageNumber += 1;
-            output.push({type: 'text', text: el, sb: 0, firstLineIndent: true});
-            pos.position = el.length * TNR_14PT_HEIGHT;
+            if(el.length * TNR_14PT_HEIGHT >= PAGE_HEIGHT){
+                insertText({text: el}, output, pos);
+            }
+            else{
+                output.push({type: 'pb'});
+                pos.pageNumber += 1;
+                output.push({type: 'text', text: el, sb: 0, firstLineIndent: true});
+                pos.position = el.length * TNR_14PT_HEIGHT;
+            }
         }
         else{
             output.push({type: 'text', text: el, sb: (i == 0 ? spacingBefore : 0), firstLineIndent: true});
@@ -298,6 +323,7 @@ function insertCodeSnippet(element, output, pos){
         }
     }
     pos.spacesBefore = SNIPPET_AFTER;
+    pos.snippet++;
 }
 
 function insertFormula(element, output, pos){
@@ -330,6 +356,13 @@ function insertFormula(element, output, pos){
     pos.spacingBefore = FORMULA_AFTER
 }
 
+function insertTitle(element, output, pos){
+    let text = element.text;
+    output.push({type: 'title', text: text});
+    pos.position += 17000;
+    pos.spacingBefore = 14000;
+}
+
 function buildSequence(seq, output, pos){
     const map = {
         section: insertrHeader,
@@ -338,7 +371,8 @@ function buildSequence(seq, output, pos){
         snippet: insertCodeSnippet,
         image: insertImage,
         formula: insertFormula,
-        table: insertTable
+        table: insertTable,
+        title: insertTitle
     }
     for(let element of seq){
         map[element.type](element, output, pos);

@@ -2,11 +2,11 @@
 .dropdown{
     width: 225px;
     height: 40px;
-    float: left;
     margin-left: 10px;
     user-select: none;
     font-size: 1.5em;
     padding: 5px;
+    display: block;
 }
 
 /* PERSONALITY */

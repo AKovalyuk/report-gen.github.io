@@ -566,7 +566,12 @@ function collectFromContainer(container){
 }
 
 function collect(){
-    return {main: collectFromContainer(document.getElementById('main'))};
+    return {
+        main: collectFromContainer(document.getElementById('main')),
+        essay: collectFromContainer(document.getElementById('essay')),
+        introduction: collectFromContainer(document.getElementById('introduction')),
+        conclusion: collectFromContainer(document.getElementById('conclusion'))
+    };
 }
 
 function onPreviewResize(){

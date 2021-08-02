@@ -50,7 +50,7 @@ function renderSelf(newPage){
             if(j != page.length - 1 && page[j + 1].type == 'text' && !page[j + 1].firstLineIndent)
                 lastLine.style.textAlignLast = 'justify';
             else
-                if(i != pages.length - 1 && pages[i + 1][0].type == 'text' && !pages[i + 1][0].firstLineIndent)
+                if(j == page.length - 1 && i != pages.length - 1 && pages[i + 1][0].type == 'text' && !pages[i + 1][0].firstLineIndent)
                     lastLine.style.textAlignLast = 'justify';
 
             p.appendChild(lastLine);
@@ -150,6 +150,12 @@ function renderSelf(newPage){
             table.style.marginTop = '6pt';
             newPage.appendChild(table);
             continue;
+        }
+        if(element.type == 'title'){
+            let container = doc.createElement('div');
+            container.classList.add('title');
+            container.textContent = element.text;
+            newPage.appendChild(container);
         }
     }
 }

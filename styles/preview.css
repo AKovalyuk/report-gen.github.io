@@ -10,10 +10,11 @@ body{
     background-color: white;
     padding: 2cm 1cm 2cm 3cm;
     margin-top: 5mm;
+    position: relative;
     box-sizing: border-box;
 }
 .paragraph{
-    font-family: 'Times New Roman', serif;
+    font-family: 'Times New Roman', Times, serif;
     font-size: 14pt;
     line-height: 17pt;
     text-align-last: justify;
@@ -24,25 +25,25 @@ body{
     display: block;
 }
 .heading{
-    font-family: 'Times New Roman', serif;
+    font-family: 'Times New Roman', Times, serif;
     font-size: 14pt;
     line-height: 17pt;
     text-align-last: justify;
     font-weight: bold;
 }
 .image-caption{
-    font-family: 'Times New Roman', serif;
+    font-family: 'Times New Roman', Times, serif;
     font-size: 14pt;
     line-height: 17pt;
     text-align-last: center;
 }
 .caption{
-    font-family: 'Times New Roman', serif;
+    font-family: 'Times New Roman', Times, serif;
     font-size: 14pt;
     line-height: 17pt;
 }
 .snippet{
-    font-family: 'Courier New';
+    font-family: 'Courier New', Courier, monospace;
     font-size: 10pt;
     line-height: 12pt;
     white-space: pre;
@@ -67,6 +68,22 @@ table{
     font-size: 12pt;
     line-height: 14pt;
 }
-.wrap{
-    
+.title{
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14pt;
+    line-height: 17pt;
+    font-family: 'Times New Roman', Times, serif;
+}
+.numberable::after{
+    display: block;
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 17pt;
+    font-size: 14pt;
+    position: absolute;
+    text-align: center;
+    content: attr(name);
+    bottom: 1cm;
+    width: 170mm;
 }
