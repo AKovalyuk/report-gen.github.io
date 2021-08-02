@@ -566,11 +566,22 @@ function collectFromContainer(container){
 }
 
 function collect(){
+    let title = document.getElementById('title');
+    let titleType = title.children[0].children[0].selectedOptions[0].getAttribute('name');
+    let common = {};
+    for(let child of title.children[1].children){
+        common[child.getAttribute('name')] = child.value;
+    }
+    let special = {};
+    for(let child of title.children[2].children){
+        special[child.getAttribute('name')] = special.value;
+    }
     return {
         main: collectFromContainer(document.getElementById('main')),
         essay: collectFromContainer(document.getElementById('essay')),
         introduction: collectFromContainer(document.getElementById('introduction')),
-        conclusion: collectFromContainer(document.getElementById('conclusion'))
+        conclusion: collectFromContainer(document.getElementById('conclusion')),
+        title: {type: 'title', titleType: titleType}.assign(common, special),
     };
 }
 
@@ -586,4 +597,14 @@ function onPreviewResize(){
 let previewResizeObserver = new ResizeObserver(onPreviewResize);
 window.onload = function(){
     previewResizeObserver.observe(document.getElementById('preview'));
+}
+
+function changeTitleType(e){
+    let container = document.getElementById('title-types-container');
+    for(let child of container.children){
+        if(child.getAttribute('name') != e.target.selectedOptions[0].getAttribute('name'))
+            child.hidden = true;
+        else
+            child.hidden = false;
+    }
 }

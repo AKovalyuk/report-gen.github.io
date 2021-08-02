@@ -8,5 +8,5 @@ def run(server_class=ThreadingHTTPServer, handler_class=SimpleHTTPRequestHandler
     httpd = server_class(server_address, handler_class)
     httpd.serve_forever()
 
-if __name__ == "__main__":
+if __name__ == "__main__"s:
       run()

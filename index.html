@@ -20,11 +20,10 @@
         <div id="editor">
             <div class="structure-element" id="title" hidden>
                 <div class="editor-element">
-                    <select class="dropdown">
+                    <select class="dropdown" onchange="changeTitleType(event);">
                         <option name="masterDissertation">Магистерская диссертация</option>
                         <option name="diplomaProject">Дипломный проект</option>
                         <option name="diplomaWork">Дипломная работа</option>
-                        <option name="bachelorWork">Бакалаврская работа</option>
                         <option name="courseProject">Курсовой проект</option>
                         <option name="courseWork">Курсовая работа</option>
                         <option name="practiceReport">Отчет о практике</option>
@@ -45,101 +44,103 @@
                     <textarea class="form-textarea" name="department" rows=1 placeholder="Кафедра"></textarea>
                     <textarea class="form-textarea" name="student" rows=1 placeholder="Студент"></textarea>
                 </div>
-                <div class="editor-element" name="masterDissertation" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="departmentHead" rows=1 placeholder="Заведующий кафедрой" tooltip="Не помещается на строку, обрезан"></textarea>
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="trainDirection" rows=1 placeholder="Код и наименование направления"></textarea>
-                    <textarea class="form-textarea" name="masterTrainDirection" rows=1 placeholder="Код и наименование магистерской программы"></textarea>
-                    <textarea class="form-textarea" name="scientificSupervisor" rows=1 placeholder="Научный руководитель" style="width: 49%;"></textarea>
-                    <textarea class="form-textarea" name="supervisorDegree" rows=1 placeholder="Должность, степень" style="width: 49%; display: inline-block; float: right;"></textarea>
-                    <textarea class="form-textarea" name="reviewer" rows=1 placeholder="Рецензент" style="width: 49%;"></textarea>
-                    <textarea class="form-textarea" name="reviewerDegree" rows=1 placeholder="Должность, степень" style="width: 49%; display: inline-block; float: right;"></textarea>
-                </div>
-                <div class="editor-element" name="diplomaProject" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="departmentHead" rows=1 placeholder="Заведующий кафедрой"></textarea>
-                    <textarea class="form-textarea" name="trainDirection" rows=1 placeholder="Код и наименование специальности"></textarea>
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="explanatoryNote" rows=1 placeholder="Пояснительная записка"></textarea>
-                    <textarea class="form-textarea" name="scientificSupervisor" rows=1 placeholder="Руководитель" style="width: 49%;"></textarea>
-                    <textarea class="form-textarea" name="supervisorDegree" rows=1 placeholder="Должность, степень" style="width: 49%; display: inline-block; float: right;"></textarea>
-                </div>
-                <div class="editor-element" name="diplomaWork" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="departmentHead" rows=1 placeholder="Заведующий кафедрой" tooltip="Не помещается на строку, обрезан"></textarea>
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="trainDirection" rows=1 placeholder="Код и наименование направления"></textarea>
-                    <textarea class="form-textarea" name="scientificSupervisor" rows=1 placeholder="Научный руководитель" style="width: 49%;"></textarea>
-                    <textarea class="form-textarea" name="supervisorDegree" rows=1 placeholder="Должность, степень" style="width: 49%; display: inline-block; float: right;"></textarea>
-                    <textarea class="form-textarea" name="reviewer" rows=1 placeholder="Рецензент" style="width: 49%;"></textarea>
-                    <textarea class="form-textarea" name="reviewerDegree" rows=1 placeholder="Должность, степень" style="width: 49%; display: inline-block; float: right;"></textarea>
-                </div>
-                <div class="editor-element" name="courseProject" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема проекта"></textarea>
-                    <textarea class="form-textarea" name="scientificSupervisor" rows=1 placeholder="Руководитель"></textarea>
-                    <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
-                </div>
-                <div class="editor-element" name="courseWork" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема работы"></textarea>
-                    <textarea class="form-textarea" name="scientificSupervisor" rows=1 placeholder="Руководитель"></textarea>
-                    <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
-                </div>
-                <div class="editor-element" name="practiceReport" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="place" rows=1 placeholder="Место прохождения"></textarea>
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Руководитель"></textarea>
-                    <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
-                </div>
-                <div class="editor-element" name="productionPracticeReport" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="place" rows=1 placeholder="Место прохождения"></textarea>
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Руководитель"></textarea>
-                    <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
-                </div>
-                <div class="editor-element" name="scientificPracticeReport" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="place" rows=1 placeholder="Место прохождения"></textarea>
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Руководитель"></textarea>
-                    <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
-                </div>
-                <div class="editor-element" name="scientificWorkReport" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="trainDirection" rows=1 placeholder="Код и наименование программы"></textarea>
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Руководитель"></textarea>
-                    <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
-                </div>
-                <div class="editor-element" name="practiceWorkReport" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                    <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
-                </div>
-                <div class="editor-element" name="laboratoryWorkReport" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                    <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
-                </div>
-                <div class="editor-element" name="projectReport" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                    <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
-                </div>
-                <div class="editor-element" name="referat" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                    <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
-                </div>
-                <div class="editor-element" name="essay" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                    <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
-                </div>
-                <div class="editor-element" name="calculationTask" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                    <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
-                </div>
-                <div class="editor-element" name="calculationGraphicTask" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                    <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                    <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                <div id="title-types-container">
+                    <div class="editor-element" name="masterDissertation" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="departmentHead" rows=1 placeholder="Заведующий кафедрой" tooltip="Не помещается на строку, обрезан"></textarea>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="trainDirection" rows=1 placeholder="Код и наименование направления"></textarea>
+                        <textarea class="form-textarea" name="masterTrainDirection" rows=1 placeholder="Код и наименование магистерской программы"></textarea>
+                        <textarea class="form-textarea" name="scientificSupervisor" rows=1 placeholder="Научный руководитель" style="width: 49%;"></textarea>
+                        <textarea class="form-textarea" name="supervisorDegree" rows=1 placeholder="Должность, степень" style="width: 49%; display: inline-block; float: right;"></textarea>
+                        <textarea class="form-textarea" name="reviewer" rows=1 placeholder="Рецензент" style="width: 49%;"></textarea>
+                        <textarea class="form-textarea" name="reviewerDegree" rows=1 placeholder="Должность, степень" style="width: 49%; display: inline-block; float: right;"></textarea>
+                    </div>
+                    <div class="editor-element" name="diplomaProject" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="departmentHead" rows=1 placeholder="Заведующий кафедрой"></textarea>
+                        <textarea class="form-textarea" name="trainDirection" rows=1 placeholder="Код и наименование специальности"></textarea>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="explanatoryNote" rows=1 placeholder="Пояснительная записка"></textarea>
+                        <textarea class="form-textarea" name="scientificSupervisor" rows=1 placeholder="Руководитель" style="width: 49%;"></textarea>
+                        <textarea class="form-textarea" name="supervisorDegree" rows=1 placeholder="Должность, степень" style="width: 49%; display: inline-block; float: right;"></textarea>
+                    </div>
+                    <div class="editor-element" name="diplomaWork" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="departmentHead" rows=1 placeholder="Заведующий кафедрой" tooltip="Не помещается на строку, обрезан"></textarea>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="trainDirection" rows=1 placeholder="Код и наименование направления"></textarea>
+                        <textarea class="form-textarea" name="scientificSupervisor" rows=1 placeholder="Научный руководитель" style="width: 49%;"></textarea>
+                        <textarea class="form-textarea" name="supervisorDegree" rows=1 placeholder="Должность, степень" style="width: 49%; display: inline-block; float: right;"></textarea>
+                        <textarea class="form-textarea" name="reviewer" rows=1 placeholder="Рецензент" style="width: 49%;"></textarea>
+                        <textarea class="form-textarea" name="reviewerDegree" rows=1 placeholder="Должность, степень" style="width: 49%; display: inline-block; float: right;"></textarea>
+                    </div>
+                    <div class="editor-element" name="courseProject" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема проекта"></textarea>
+                        <textarea class="form-textarea" name="scientificSupervisor" rows=1 placeholder="Руководитель"></textarea>
+                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
+                    <div class="editor-element" name="courseWork" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема работы"></textarea>
+                        <textarea class="form-textarea" name="scientificSupervisor" rows=1 placeholder="Руководитель"></textarea>
+                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
+                    <div class="editor-element" name="practiceReport" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="place" rows=1 placeholder="Место прохождения"></textarea>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Руководитель"></textarea>
+                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
+                    <div class="editor-element" name="productionPracticeReport" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="place" rows=1 placeholder="Место прохождения"></textarea>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Руководитель"></textarea>
+                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
+                    <div class="editor-element" name="scientificPracticeReport" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="place" rows=1 placeholder="Место прохождения"></textarea>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Руководитель"></textarea>
+                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
+                    <div class="editor-element" name="scientificWorkReport" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="trainDirection" rows=1 placeholder="Код и наименование программы"></textarea>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Руководитель"></textarea>
+                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
+                    <div class="editor-element" name="practiceWorkReport" style="margin-top: 8px;">
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
+                    <div class="editor-element" name="laboratoryWorkReport" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
+                    <div class="editor-element" name="projectReport" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
+                    <div class="editor-element" name="referat" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
+                    <div class="editor-element" name="essay" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
+                    <div class="editor-element" name="calculationTask" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
+                    <div class="editor-element" name="calculationGraphicTask" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
                 </div>
             </div>
             <div class="structure-element" id="essay" hidden>
