@@ -186,3 +186,17 @@ textarea, div[contenteditable="true"]{
 .form-textarea:nth-child(1){
     margin-top: 0;
 }
+.dropdown{
+    width: max-content;
+    height: 40px;
+    margin-left: 10px;
+    user-select: none;
+    font-size: 1.5em;
+    padding: 5px;
+    display: block;
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    color: grey;
+}

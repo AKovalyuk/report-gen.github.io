@@ -28,6 +28,97 @@ function renderCheck(body){
     }
 }
 
+function drawSimpleTitle(title, newPage, element){
+    let doc = newPage.ownerDocument;
+    newPage.innerHTML += '<div class="central-align-text">Федеральное государственное автономное\nобразовательное учреждение\nвысшего образования\n«СИБИРСКИЙ ФЕДЕРАЛЬНЫЙ УНИВЕРСИТЕТ»</div>';
+    let firstTable = doc.createElement('table');
+    firstTable.style.width = '170mm';
+    let tr = doc.createElement('tr');
+    let td = doc.createElement('td');
+    td.textContent = element.institute;
+    td.style.height = '17pt';
+    td.classList.add('standart-table-cell');
+    td.classList.add('title-table-cell');
+    tr.appendChild(td);
+    firstTable.appendChild(tr);
+    tr = doc.createElement('tr');
+    td = doc.createElement('td');
+    td.textContent = 'институт';
+    td.style.borderTop = '0.5pt solid black';
+    td.classList.add('title-table-cell');
+    tr.appendChild(td);
+    firstTable.appendChild(tr);
+    tr = doc.createElement('tr');
+    td = doc.createElement('td');
+    td.textContent = element.department;
+    td.style.height = '17pt';
+    td.classList.add('standart-table-cell');
+    td.classList.add('title-table-cell');
+    tr.appendChild(td);
+    firstTable.appendChild(tr);
+    tr = doc.createElement('tr');
+    td = doc.createElement('td');
+    td.textContent = 'кафедра';
+    td.style.borderTop = '0.5pt solid black';
+    td.classList.add('title-table-cell');
+    tr.appendChild(td);
+    firstTable.appendChild(tr);
+    newPage.appendChild(firstTable);
+    let bigTitle = doc.createElement('div');
+    bigTitle.textContent = title;
+    bigTitle.classList.add('central-align-text');
+    bigTitle.style.fontWeight = 'bold';
+    newPage.appendChild(bigTitle);
+    if(element.titleType == 'practiceWorkReport' || element.titleType == 'laboratoryWorkReport' || element.titleType == 'projectReport'){
+        let secondTable = doc.createElement('table');
+        secondTable.style.width = '170mm';
+        let tr = doc.createElement('tr');
+        let td = doc.createElement('td');
+        td.textContent = element.theme;
+        td.style.height = '17pt';
+        td.classList.add('standart-table-cell');
+        td.classList.add('title-table-cell');
+        tr.appendChild(td);
+        secondTable.appendChild(tr);
+        tr = doc.createElement('tr');
+        td = doc.createElement('td');
+        td.textContent = 'тема';
+        td.style.borderTop = '0.5pt solid black';
+        td.classList.add('title-table-cell');
+        tr.appendChild(td);
+        secondTable.appendChild(tr);
+        newPage.appendChild(secondTable);
+    }
+    else{
+        let secondTable = doc.createElement('table');
+        secondTable.style.width = '170mm';
+        let tr = doc.createElement('tr');
+        let td = doc.createElement('td');
+        td.textContent = 'по';
+        td.classList.add('title-table-cell');
+        td.classList.add('standart-table-cell');
+        td.style.width = '5mm';
+        tr.appendChild(td);
+        td = doc.createElement('td');
+        td.textContent = element.subject;
+        td.classList.add('title-table-cell');
+        td.classList.add('standart-table-cell');
+        td.style.width ='165mm'
+        tr.appendChild(td);
+        secondTable.appendChild(tr);
+        tr = doc.createElement('tr');
+        td = doc.createElement('td');
+        td.classList.add('title-table-cell');
+        td.textContent = 'наименование дисциплины';
+        td.setAttribute('colspan', '2');
+        td.style.borderTop = '0.5pt solid black';
+        tr.appendChild(td);
+        secondTable.appendChild(tr);
+        newPage.appendChild(secondTable);
+    }
+    
+}
+
 function renderSelf(newPage){
     let doc = newPage.ownerDocument;
     let pageIndex = Number.parseInt(newPage.getAttribute('name')) - 1;
@@ -156,6 +247,27 @@ function renderSelf(newPage){
             container.classList.add('title');
             container.textContent = element.text;
             newPage.appendChild(container);
+        }
+        if(element.type == 'tlist'){
+            let map = {
+                practiceWorkReport: [drawSimpleTitle, 'ОТЧЕТ О ПРАКТИЧЕСКОЙ РАБОТЕ', newPage, element],
+                laboratoryWorkReport: [drawSimpleTitle, 'ОТЧЕТ ПО ЛАБОРАТОРНОЙ РАБОТЕ', newPage, element],
+                projectReport: [drawSimpleTitle, 'ОТЧЕТ О ВЫПОЛНЕНИИ ПРОЕКТА', newPage, element],
+                referat: [drawSimpleTitle, 'РЕФЕРАТ', newPage, element],
+                essay: [drawSimpleTitle, 'ЭССЕ', newPage, element],
+                calculationTask: [drawSimpleTitle, 'РАСЧЕТНОЕ ЗАДАНИЕ', newPage, element],
+                controlWork: [drawSimpleTitle, 'КОНТРОЛЬНАЯ РАБОТА', newPage, element],
+                calculationGraphicTask: [drawSimpleTitle, 'РАСЧЕТНО-ГРАФИЧЕСКОЕ ЗАДАНИЕ (РАБОТА)', newPage, element],
+            };
+            map[element.titleType][0](...map[element.titleType].slice(1));
+            continue;
+        }
+        if(element.type == 'line'){
+            let div = doc.createElement('div');
+            div.classList.add('line');
+            div.textContent = element.text.join('\n');
+            div.style.marginTop = `${element.sb / 1000}pt`;
+            newPage.appendChild(div);
         }
     }
 }

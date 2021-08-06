@@ -12,7 +12,7 @@ function showButtons(evt){
         if(el.matches('.section'))
             sections += 1;
     }
-    let textOnly = document.getElementById('conclusion').contains(evt) || document.getElementById('introduction').contains(evt) || document.getElementById('essay').contains(evt);
+    let textOnly = document.getElementById('conclusion').contains(evt) || document.getElementById('introduction').contains(evt);
     editorElements = (evt.parentElement.children.length - 1) / 2 - sections;
     if(sections == 0){
         // TODO text only elements
@@ -331,6 +331,7 @@ function renderFormulaPreview(){
         event.target.parentElement.children[1].remove();
     if(math == ''){
         event.target.parentElement.cache = null;
+        upd();
         return;
     }
     let node = MathJax.tex2svg(math);
@@ -348,7 +349,8 @@ function renderFormulaPreview(){
         png = '<img class="formula-png" onload="CacheWriter.formula(event.target.parentElement);" src="' + canvas.toDataURL( "image/png" ) + '"></img>';
         node.insertAdjacentHTML('afterend', png);
         node.remove();
-        console.log('Rendered formula:', performance.now() - time, 'ms')
+        console.log('Rendered formula:', performance.now() - time, 'ms');
+        upd();
     }
 }
 
@@ -428,7 +430,7 @@ class CacheWriter{
     }
 
     static enumeration(editorElement){
-        let textareas = [...editorElement.getElementsByClassName('enumeration-text')]
+        let textareas = [...editorElement.getElementsByClassName('enumeration-text')];
         textareas = textareas.filter(textarea => textarea.value != '');
         if(textareas.length < 1){
             editorElement.cache = null;
@@ -445,7 +447,7 @@ class CacheWriter{
 
     static image(editorElement){
         let img = editorElement.getElementsByClassName('image-preview')[0];
-        if(img.src == '' || img.src[0] == 'f'){
+        if(img.src == '' || img.src[0] == 'f' || img.src[0] == 'h'){
             editorElement.cache = null;
             return;
         }
@@ -502,6 +504,28 @@ class CacheWriter{
             math: math,
             width: png.naturalWidth,
             height: png.naturalHeight,
+        }
+        console.log(editorElement.cache);
+    }
+
+    static abbrList(editorElement){
+        let textareas = [...editorElement.getElementsByClassName('enumeration-text')];
+        textareas = textareas.filter(textarea => textarea.value != '');
+        if(textareas.length < 1){
+            editorElement.cache = null;
+            return;
+        }
+        textareas = textareas.sort(function(a, b){
+            if(a.value > b.value)
+                return 1
+            if(a.value < b.value)
+                return -1
+            return 0;
+        });
+        for(let i = 0; i < textareas.length; i++)
+            textareas[i] = line_divide('\t' + textareas[i].value, TimesNewRoman, 14, 481000);
+        editorElement.cache = {
+            text: textareas,
         }
         console.log(editorElement.cache);
     }
@@ -566,22 +590,27 @@ function collectFromContainer(container){
 }
 
 function collect(){
+    // collect title data
     let title = document.getElementById('title');
     let titleType = title.children[0].children[0].selectedOptions[0].getAttribute('name');
     let common = {};
     for(let child of title.children[1].children){
         common[child.getAttribute('name')] = child.value;
     }
-    let special = {};
-    for(let child of title.children[2].children){
-        special[child.getAttribute('name')] = special.value;
+    let special = {}, selected = document.getElementById('title-types-container').querySelector(`[name="${titleType}"]`);
+    for(let child of selected.children){
+        special[child.getAttribute('name')] = child.value;
     }
+    // collect abbr-list data
+    let abbrListContainer = document.getElementById('abbr-list-container'), abbrListCollResult = [];
+    if(abbrListContainer.cache != undefined)
+        abbrListCollResult.push(Object.assign({type: 'enumeration', node: abbrListContainer}, abbrListContainer.cache));
     return {
         main: collectFromContainer(document.getElementById('main')),
-        essay: collectFromContainer(document.getElementById('essay')),
         introduction: collectFromContainer(document.getElementById('introduction')),
         conclusion: collectFromContainer(document.getElementById('conclusion')),
-        title: {type: 'title', titleType: titleType}.assign(common, special),
+        abbrList: abbrListCollResult,
+        tlist: Object.assign({type: 'tlist', titleType: titleType}, common, special),
     };
 }
 
@@ -596,6 +625,7 @@ function onPreviewResize(){
 
 let previewResizeObserver = new ResizeObserver(onPreviewResize);
 window.onload = function(){
+    upd();
     previewResizeObserver.observe(document.getElementById('preview'));
 }
 
@@ -606,5 +636,17 @@ function changeTitleType(e){
             child.hidden = true;
         else
             child.hidden = false;
+    }
+}
+
+function abbrListOnblur(){
+    let children = event.target.parentElement.children;
+    if(children[children.length - 1].value != '')
+        event.target.parentElement.insertAdjacentHTML("beforeend", '<textarea class="enumeration-text" onblur="CacheWriter.abbrList(event.target.parentElement);upd();abbrListOnblur();dumpValue();"></textarea>');
+    for(let i = 0; i < children.length - 1; i++){
+        if(children[i].value == ''){
+            children[i].remove();
+            break;
+        }
     }
 }

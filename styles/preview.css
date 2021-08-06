@@ -87,3 +87,28 @@ table{
     bottom: 1cm;
     width: 170mm;
 }
+.central-align-text{
+    display: block;
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 17pt;
+    font-size: 14pt;
+    text-align: center;
+    white-space: pre;
+    width: 170mm;
+}
+.standart-table-cell{
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 17pt;
+    font-size: 14pt;
+    text-align: center;
+    border-top: 0.5pt solid black;
+}
+.title-table-cell{
+    border: 0;
+}
+.line{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 14pt;
+    line-height: 17pt;
+    white-space: pre;
+}

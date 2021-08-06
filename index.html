@@ -5,7 +5,6 @@
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="styles/page.css">
         <link rel="stylesheet" type="text/css" href="styles/editor.css">
-        <link rel="stylesheet" type="text/css" href="styles/ui_elements.css">
         <link rel="stylesheet" type="text/css" href="styles/table-editor.css">
         <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
         <script src="./scripts/font_metrics.js"></script>
@@ -20,8 +19,8 @@
         <div id="editor">
             <div class="structure-element" id="title" hidden>
                 <div class="editor-element">
-                    <select class="dropdown" onchange="changeTitleType(event);">
-                        <option name="masterDissertation">Магистерская диссертация</option>
+                    <select class="dropdown" onchange="changeTitleType(event);upd();" style="width: 100%; margin: 0;">
+                        <!--<option name="masterDissertation">Магистерская диссертация</option>
                         <option name="diplomaProject">Дипломный проект</option>
                         <option name="diplomaWork">Дипломная работа</option>
                         <option name="courseProject">Курсовой проект</option>
@@ -29,23 +28,24 @@
                         <option name="practiceReport">Отчет о практике</option>
                         <option name="productionPracticeReport">Отчет о производственной практике</option>
                         <option name="scientificPracticeReport">Отчет о научно-педагогической практике</option>
-                        <option name="scientificWorkReport">Отчет о НИР</option>
+                        <option name="scientificWorkReport">Отчет о НИР</option>-->
                         <option name="practiceWorkReport" selected>Отчет о практической работе</option>
                         <option name="laboratoryWorkReport">Отчет о лабораторной работе</option>
                         <option name="projectReport">Отчет о выполнении проекта</option>
                         <option name="referat">Реферат</option>
                         <option name="essay">Эссе</option>
                         <option name="calculationTask">Расчетное задание</option>
+                        <option name="controlWork">Контрольная работа</option>
                         <option name="calculationGraphicTask">Расчетно-графическое задание</option>
                     </select>
                 </div>
                 <div class="editor-element" name="common" style="margin-top: 8px;">
-                    <textarea class="form-textarea" name="institute" rows=1 placeholder="Институт"></textarea>
-                    <textarea class="form-textarea" name="department" rows=1 placeholder="Кафедра"></textarea>
-                    <textarea class="form-textarea" name="student" rows=1 placeholder="Студент"></textarea>
+                    <textarea class="form-textarea" onblur="dumpValue();upd();" name="institute" rows=1 placeholder="Институт"></textarea>
+                    <textarea class="form-textarea" onblur="dumpValue();upd();" name="department" rows=1 placeholder="Кафедра"></textarea>
+                    <textarea class="form-textarea" onblur="dumpValue();upd();" name="student" rows=1 placeholder="Студент"></textarea>
                 </div>
                 <div id="title-types-container">
-                    <div class="editor-element" name="masterDissertation" style="margin-top: 8px;" hidden>
+                    <!--<div class="editor-element" name="masterDissertation" style="margin-top: 8px;" hidden>
                         <textarea class="form-textarea" name="departmentHead" rows=1 placeholder="Заведующий кафедрой" tooltip="Не помещается на строку, обрезан"></textarea>
                         <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
                         <textarea class="form-textarea" name="trainDirection" rows=1 placeholder="Код и наименование направления"></textarea>
@@ -101,52 +101,61 @@
                         <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="scientificWorkReport" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" name="trainDirection" rows=1 placeholder="Код и наименование программы"></textarea>
-                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Руководитель"></textarea>
-                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
-                    </div>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="trainDirection" rows=1 placeholder="Код и наименование программы"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Руководитель"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>-->
                     <div class="editor-element" name="practiceWorkReport" style="margin-top: 8px;">
-                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="laboratoryWorkReport" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="projectReport" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="referat" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="essay" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="calculationTask" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                    </div>
+                    <div class="editor-element" name="controlWork" style="margin-top: 8px;" hidden>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="calculationGraphicTask" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                 </div>
             </div>
-            <div class="structure-element" id="essay" hidden>
+            <!--<div class="structure-element" id="essay" hidden>
                 <div class="insert insert-nosections" onclick="showButtons();" onmouseleave="hideButtons();"></div>
-            </div>
-            <div class="structure-element" id="table-of-contents" hidden></div>
+            </div>-->
             <div class="structure-element" id="introduction" hidden>
                 <div class="insert insert-nosections" onclick="showButtons();" onmouseleave="hideButtons();"></div>
             </div>
@@ -156,15 +165,18 @@
             <div class="structure-element" id="conclusion" hidden>
                 <div class="insert insert-nosections" onclick="showButtons();" onmouseleave="hideButtons();"></div>
             </div>
-            <div class="structure-element" id="abbr-list" hidden></div>
+            <div class="structure-element" id="abbr-list" hidden>
+                <div class="editor-element" id="abbr-list-container" style="margin-top: 8px;">
+                    <textarea class="enumeration-text" onblur="CacheWriter.abbrList(event.target.parentElement);upd();abbrListOnblur();dumpValue();"></textarea>
+                </div>
+            </div>
             <div class="structure-element" id="source-list" hidden></div>
         </div>
         <div id="header">
             <select class="dropdown" id="dropdown-select-structure-element" 
             onchange="changeStructureElement(this.selectedOptions[0].getAttribute('name'));">
                 <option name="title">Титульный лист</option>
-                <option name="essay">Реферат</option>
-                <option name="table-of-contents">Содержание</option>
+                <!---<option name="essay">Реферат</option>-->
                 <option name="introduction">Введение</option>
                 <option name="main" selected>Основная часть</option>
                 <option name="conclusion">Заключение</option>

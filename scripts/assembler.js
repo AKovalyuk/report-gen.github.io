@@ -25,7 +25,8 @@ const
     CNEW_10PT_HEIGHT = 12000,
     FORMULA_BEFORE = 7000,
     FORMULA_AFTER = 7000,
-    MAX_FORMULA_HEIGHT = 120
+    MAX_FORMULA_HEIGHT = 120,
+    SPACE_SIZE = 250
     ;
 
 let buildResult = null;
@@ -39,14 +40,47 @@ function upd(){
 }
 
 function build(uiData){
-    let main = uiData.main, essay = uiData.essay, introduction = uiData.introduction, conclusion = uiData.conclusion;
+    let main = uiData.main, 
+        introduction = uiData.introduction, 
+        conclusion = uiData.conclusion, 
+        tlist = uiData.tlist,
+        abbrList = uiData.abbrList;
     let introductionPos = new Position(), introductionResult = [];
     buildSequence((introduction.length > 0 ? [{type: 'title', text: 'ВВЕДЕНИЕ'}] : []).concat(introduction), introductionResult, introductionPos);
     let mainPos = new Position(), mainResult = [];
     buildSequence(main, mainResult, mainPos);
     let conclusionPos = new Position(), conclusionResult = [];
     buildSequence((conclusion.length > 0 ? [{type: 'title', text: 'ЗАКЛЮЧЕНИЕ'}] : []).concat(conclusion), conclusionResult, conclusionPos);
-    return packPages(introductionResult).concat(packPages(mainResult).concat(packPages(conclusionResult)));
+    let abbrListPos = new Position(), abbrListResult = [];
+    buildSequence((abbrList.length > 0 ? [{type: 'title', text: 'СПИСОК СОКРАЩЕНИЙ'}] : []).concat(abbrList), abbrListResult, abbrListPos);
+    if(introductionResult[0] && introductionResult[0].length != 1)
+        introductionPos.tocData.unshift([1, 'ВВЕДЕНИЕ']);
+    if(conclusionResult[0] && conclusionResult[0].length != 1)
+        conclusionPos.tocData.unshift([1, 'ЗАКЛЮЧЕНИЕ']);
+    if(abbrListResult[0] && abbrListResult[0].length != 1)
+        abbrListPos.tocData.unshift([1, 'СПИСОК СОКРАЩЕНИЙ']);
+    if(!introductionResult.length)
+        introductionPos.pageNumber = 0;
+    if(!conclusionResult.length)
+        conclusionPos.pageNumber = 0;
+    if(!mainResult.length)
+        mainPos.pageNumber = 0;
+    if(!abbrListResult.length)
+        abbrListPos.pageNumber = 0;
+    let toc = createTableOfContents(mergeTocData([
+        introductionPos,
+        mainPos,
+        conclusionPos,
+        abbrListPos
+    ]));
+    if(toc.length > 0)
+        toc.unshift({type: 'title', text: 'СОДЕРЖАНИЕ'});
+    return [[tlist]]
+        .concat(packPages(toc))
+        .concat(packPages(introductionResult))
+        .concat(packPages(mainResult)
+        .concat(packPages(conclusionResult)))
+        .concat(packPages(abbrListResult));
 }
 
 class Position{
@@ -62,6 +96,7 @@ class Position{
         this.subchapter = 1;
         this.section = 1;
         this.subsection = 1;
+        this.tocData = [];
     }
 }
 
@@ -164,21 +199,33 @@ function insertrHeader(element, output, pos){
     let spacingBefore = (pos.nestingLevel == 0 && pos.chapter == 1) ? 0 : Math.max(pos.spacingBefore, HEADING_BEFORE);
     let chapterName = [...element.text];
     let nestingLevel = pos.nestingLevel, numbering = '';
+    let tocData = [];
     if(nestingLevel == 0){
         numbering = `\t${pos.chapter}`;
+        tocData[2] = pos.chapter;
     }
     if(nestingLevel == 1){
         numbering = `\t${pos.chapter}.${pos.subchapter}`;
+        tocData[2] = pos.chapter;
+        tocData[3] = pos.subchapter;
     }
     if(nestingLevel == 2){
         numbering = `\t${pos.chapter}.${pos.subchapter}.${pos.section}`;
+        tocData[2] = pos.chapter;
+        tocData[3] = pos.subchapter;
+        tocData[4] = pos.section;
     }
     if(nestingLevel == 3){
         numbering = `\t${pos.chapter}.${pos.subchapter}.${pos.section}.${pos.subsection}`;
+        tocData[2] = pos.chapter;
+        tocData[3] = pos.subchapter;
+        tocData[4] = pos.section;
+        tocData[5] = pos.subsection;
     }
-    if(chapterName.length >= 25){
-        throw Error(`${numbering}: Слишком много строк в заголовке`)
+    if(chapterName.length >= 15){
+        chapterName = chapterName.slice(15);
     }
+    tocData[1] = chapterName[0].slice(12) + chapterName.slice(1).join(' ');
     chapterName[0] = numbering + chapterName[0].slice(12);
     if(TNR_14PT_HEIGHT * chapterName.length + spacingBefore >= PAGE_HEIGHT - pos.position){
         output.push({type: 'pb'});
@@ -192,6 +239,8 @@ function insertrHeader(element, output, pos){
         pos.position += spacingBefore + TNR_14PT_HEIGHT * chapterName.length;
     }
     pos.spacingBefore = HEADING_AFTER;
+    tocData[0] = pos.pageNumber;
+    pos.tocData.push(tocData);
     pos.nestingLevel += 1;
     buildSequence(element.elements, output, pos);
     pos.nestingLevel -= 1;
@@ -391,4 +440,55 @@ function packPages(seq){
         }
     }
     return pages;
+}
+
+function createTableOfContents(toc){
+    let leftParts = [], centralParts = [], pbs = new Set();
+    for(let tocObj of toc){
+        let leftPart = ' '.repeat((tocObj.length - 2) * 2) + tocObj.slice(2).join('.') + (tocObj.length > 2 ? ' ' : '');
+        leftParts.push(leftPart);
+        let centralPart = line_divide(tocObj[1], TimesNewRoman, 14, convert_millimeters(170) - string_metrics(leftPart, TimesNewRoman) * 14 - 28000);
+        centralParts.push(centralPart);
+    }
+    let currentPageRem = 41;
+    for(let i = 0; i < centralParts.length; i++){
+        if(currentPageRem - centralParts[i].length < 0){
+            currentPageRem = 42;
+            pbs.add(i);
+        }
+        currentPageRem -= centralParts[i].length;
+    }
+    let totalPagesBeforeToc = 2 + pbs.size;
+    for(let i = 0; i < centralParts.length; i++){
+        let cp = centralParts[i];
+        cp[0] = leftParts[i] + cp[0];
+        lpiLength = string_metrics(leftParts[i], TimesNewRoman);
+        for(let j = 1; j < cp.length; j++){
+            cp[j] = ' '.repeat(Math.floor(lpiLength / SPACE_SIZE)) + cp[j];
+        }
+        let dots = Math.floor((convert_millimeters(170) - string_metrics(cp[cp.length - 1], TimesNewRoman) * 14 - 28000) / 3500);
+        number = totalPagesBeforeToc + toc[i][0];
+        cp[cp.length - 1] += '.'.repeat(dots) + ' '.repeat(8 - String(number).length * 2) + number;
+    }
+    let result = [];
+    for(let i = 0; i < centralParts.length; i++){
+        if(pbs.has(i)){
+            result.push({type: 'pb'});
+        }
+        result.push({type: 'line', text: centralParts[i], sb: (i == 0 ? 14000 : 0)});
+    }
+    return result;
+}
+
+function mergeTocData(poss){
+    let currentShift = 0;
+    let result = [];
+    for(let pos of poss){
+        for(let i = 0; i < pos.tocData.length; i++){
+            pos.tocData[i][0] += currentShift;
+        }
+        result = result.concat(pos.tocData);
+        currentShift += pos.pageNumber;
+    }
+    return result;
 }
