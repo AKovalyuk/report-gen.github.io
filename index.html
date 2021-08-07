@@ -40,9 +40,9 @@
                     </select>
                 </div>
                 <div class="editor-element" name="common" style="margin-top: 8px;">
-                    <textarea class="form-textarea" onblur="dumpValue();upd();" name="institute" rows=1 placeholder="Институт"></textarea>
-                    <textarea class="form-textarea" onblur="dumpValue();upd();" name="department" rows=1 placeholder="Кафедра"></textarea>
-                    <textarea class="form-textarea" onblur="dumpValue();upd();" name="student" rows=1 placeholder="Студент"></textarea>
+                    <textarea class="form-textarea" data-width="170" onblur="limitTextarea();dumpValue();upd();" name="institute" rows=1 placeholder="Институт"></textarea>
+                    <textarea class="form-textarea" data-width="170" onblur="limitTextarea();dumpValue();upd();" name="department" rows=1 placeholder="Кафедра"></textarea>
+                    <textarea class="form-textarea" data-width="40" onblur="limitTextarea();dumpValue();upd();" name="student" rows=1 placeholder="Студент"></textarea>
                 </div>
                 <div id="title-types-container">
                     <!--<div class="editor-element" name="masterDissertation" style="margin-top: 8px;" hidden>
@@ -107,49 +107,49 @@
                         <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>-->
                     <div class="editor-element" name="practiceWorkReport" style="margin-top: 8px;">
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" data-width="170" onblur="limitTextarea();dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" data-width="40" onblur="limitTextarea();dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" data-width="55" onblur="limitTextarea();dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="laboratoryWorkReport" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" data-width="170" onblur="limitTextarea();dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" data-width="40" onblur="limitTextarea();dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" data-width="55" onblur="limitTextarea();dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="projectReport" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" data-width="170" onblur="limitTextarea();dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" data-width="40" onblur="limitTextarea();dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" data-width="55" onblur="limitTextarea();dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="referat" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" data-width="165" onblur="limitTextarea();dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
+                        <textarea class="form-textarea" data-width="170" onblur="limitTextarea();dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" data-width="40" onblur="limitTextarea();dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" data-width="55" onblur="limitTextarea();dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="essay" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" data-width="165" onblur="limitTextarea();dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
+                        <textarea class="form-textarea" data-width="170" onblur="limitTextarea();dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" data-width="40" onblur="limitTextarea();dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" data-width="55" onblur="limitTextarea();dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="calculationTask" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" data-width="165" onblur="limitTextarea();dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
+                        <textarea class="form-textarea" data-width="170" onblur="limitTextarea();dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" data-width="40" onblur="limitTextarea();dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" data-width="55" onblur="limitTextarea();dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="controlWork" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" data-width="165" onblur="limitTextarea();dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
+                        <textarea class="form-textarea" data-width="170" onblur="limitTextarea();dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" data-width="40" onblur="limitTextarea();dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" data-width="55" onblur="limitTextarea();dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                     <div class="editor-element" name="calculationGraphicTask" style="margin-top: 8px;" hidden>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
-                        <textarea class="form-textarea" onblur="dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
+                        <textarea class="form-textarea" data-width="165" onblur="limitTextarea();dumpValue();upd();" name="subject" rows=1 placeholder="Предмет"></textarea>
+                        <textarea class="form-textarea" data-width="170" onblur="limitTextarea();dumpValue();upd();" name="theme" rows=1 placeholder="Тема"></textarea>
+                        <textarea class="form-textarea" data-width="40" onblur="limitTextarea();dumpValue();upd();" name="supervisor" rows=1 placeholder="Преподаватель"></textarea>
+                        <textarea class="form-textarea" data-width="55" onblur="limitTextarea();dumpValue();upd();" name="groupRecordBook" rows=1 placeholder="Номер группы, зачетной книжки"></textarea>
                     </div>
                 </div>
             </div>

@@ -650,3 +650,8 @@ function abbrListOnblur(){
         }
     }
 }
+
+function limitTextarea(){
+    let width = Number.parseInt(event.target.getAttribute('data-width'));
+    event.target.value = line_divide(event.target.value, TimesNewRoman, 14, convert_millimeters(width))[0];
+}
