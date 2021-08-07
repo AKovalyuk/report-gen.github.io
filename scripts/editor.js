@@ -186,6 +186,18 @@ function loadValue(element){
     }
 }
 
+function loadSelectValue(element){
+    for(let select of element.getElementsByTagName('select')){
+        let selectedIndex = select.getAttribute('data-index');
+        if(selectedIndex != null)
+            select.selectedIndex = Number.parseInt(selectedIndex);
+    }
+}
+
+function dumpSelectValue(){
+    event.target.setAttribute('data-index', event.target.selectedIndex);
+}
+
 // inner clipboard for element
 let clipboard = null;
 
