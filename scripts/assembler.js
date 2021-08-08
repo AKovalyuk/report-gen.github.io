@@ -132,9 +132,6 @@ function insertTable(element, output, pos){
     headerHeight *= TNR_12PT_HEIGHT;
     let rowsHeight = [];
     for(let row of rows){
-        /*rowsHeight.push(Math.max.apply(null, row.map(function(val, ind, arr){
-            return val.length;
-        }) * TNR_12PT_HEIGHT));*/
         let maxHeight = 0;
         for(let i = 0; i < row.length; i++){
             maxHeight = Math.max(maxHeight, row[i].length);
@@ -151,8 +148,38 @@ function insertTable(element, output, pos){
         headerHeight + 
         Math.max.apply(null, rowsHeight) +
         3 * BORDER_TABLE_SIZE + TNR_14PT_HEIGHT +
-        PRE_TABLE_TEXT_AFTER >= PAGE_HEIGHT)
-        throw Error(`Таблица ${pos.table}: Недостаточно места для расположения строк на странице`)
+        PRE_TABLE_TEXT_AFTER >= PAGE_HEIGHT){
+            if(preTableText.length > 6){
+                preTableText = preTableText.slice(0, 5);
+                preTableText.push('...');
+            }
+            for(let i = 0; i < header.length; i++){
+                if(header[i].length > 6){
+                    header[i] = header[i].slice(0, 5);
+                    header[i].push('...');
+                }
+            }
+            for(let i = 0; i < rows.length; i++)
+                for(let j = 0; j < rows[i].length; j++){
+                    if(rows[i][j].length > 21){
+                        rows[i][j] = rows[i][j].slice(0, 20);
+                        rows[i][j].push('...');
+                    }
+                }
+            headerHeight = 0;
+            for(let headerElement of header){
+                headerHeight = Math.max(headerElement.length, headerHeight); 
+            }
+            headerHeight *= TNR_12PT_HEIGHT;
+            rowsHeight = [];
+            for(let row of rows){
+                let maxHeight = 0;
+                for(let i = 0; i < row.length; i++){
+                    maxHeight = Math.max(maxHeight, row[i].length);
+                }
+                rowsHeight.push(maxHeight * TNR_12PT_HEIGHT);
+            }
+        }
     let firstPB = false;
     if(headerHeight + rowsHeight[0] +
         3 * BORDER_TABLE_SIZE + preTableText.length * TNR_14PT_HEIGHT +
@@ -268,8 +295,15 @@ function insertImage(element, output, pos){
     let caption = [...element.caption];
     caption[0] = `Рисунок ${pos.image}` + caption[0].slice(12);
     let constructionSize = caption.length * TNR_14PT_HEIGHT + destHeight * PUNCTS_PER_PIXEL + PICTURE_BEFORE + spacingBefore + PICTURE_AFTER;
-    if(constructionSize - spacingBefore >= PAGE_HEIGHT)
-        throw Error(`Рисунок ${pos.image}: невозможно уместить на страницу`);
+    if(constructionSize - spacingBefore >= PAGE_HEIGHT){
+        destWidth = destWidth * (400 / destHeight);
+        destHeight = 400;
+        if(caption.length > 6){
+            caption = caption.slice(0, 5);
+            caption.push('...');
+        }
+        constructionSize = caption.length * TNR_14PT_HEIGHT + destHeight * PUNCTS_PER_PIXEL + PICTURE_BEFORE + spacingBefore + PICTURE_AFTER;
+    }
     if(constructionSize >= PAGE_HEIGHT - pos.position){
         output.push({type: 'pb'})
         pos.pageNumber += 1;
