@@ -292,12 +292,8 @@ function renderSelf(newPage){
             let lastLine = doc.createElement('div');
             lastLine.textContent = element.text[element.text.length - 1];
             lastLine.style.textAlignLast = 'left';
-            if(j != page.length - 1 && page[j + 1].type == 'text' && !page[j + 1].firstLineIndent)
+            if(j == page.length - 1 && i != pages.length - 1 && pages[i + 1][0].type == 'text' && !pages[i + 1][0].firstLineIndent)
                 lastLine.style.textAlignLast = 'justify';
-            else
-                if(j == page.length - 1 && i != pages.length - 1 && pages[i + 1][0].type == 'text' && !pages[i + 1][0].firstLineIndent)
-                    lastLine.style.textAlignLast = 'justify';
-
             p.appendChild(lastLine);
             if(element.firstLineIndent)
                 p.children[0].style.textIndent = '12.5mm';

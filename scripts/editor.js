@@ -151,6 +151,8 @@ function onImageLoad(){
 
 // if file is uncorrect image
 function onUncorrectImage(){
+    if(event.target.src.length > 0 && event.target.src[0] != 'd')
+        return;
     event.target.src = "";
     event.target.parentElement.children[2].value = "";
 }
@@ -358,11 +360,10 @@ function renderFormulaPreview(){
     img.setAttribute('src', 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData))));
     img.onload = function(){
         context.drawImage(img, 0, 0, svg.width.baseVal.value * svgScaleFactor, svg.height.baseVal.value * svgScaleFactor);
-        png = '<img class="formula-png" onload="CacheWriter.formula(event.target.parentElement);" src="' + canvas.toDataURL( "image/png" ) + '"></img>';
+        png = '<img class="formula-png" onload="CacheWriter.formula(event.target.parentElement);upd();" src="' + canvas.toDataURL( "image/png" ) + '"></img>';
         node.insertAdjacentHTML('afterend', png);
         node.remove();
         console.log('Rendered formula:', performance.now() - time, 'ms');
-        upd();
     }
 }
 
