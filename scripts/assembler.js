@@ -44,7 +44,8 @@ function build(uiData){
         introduction = uiData.introduction, 
         conclusion = uiData.conclusion, 
         tlist = uiData.tlist,
-        abbrList = uiData.abbrList;
+        abbrList = uiData.abbrList,
+        sourceList = uiData.sourceList;
     let introductionPos = new Position(), introductionResult = [];
     buildSequence((introduction.length > 0 ? [{type: 'title', text: 'ВВЕДЕНИЕ'}] : []).concat(introduction), introductionResult, introductionPos);
     let mainPos = new Position(), mainResult = [];
@@ -53,12 +54,16 @@ function build(uiData){
     buildSequence((conclusion.length > 0 ? [{type: 'title', text: 'ЗАКЛЮЧЕНИЕ'}] : []).concat(conclusion), conclusionResult, conclusionPos);
     let abbrListPos = new Position(), abbrListResult = [];
     buildSequence((abbrList.length > 0 ? [{type: 'title', text: 'СПИСОК СОКРАЩЕНИЙ'}] : []).concat(abbrList), abbrListResult, abbrListPos);
+    let sourceListPos = new Position(), sourceListResult = [];
+    buildSequence((sourceList.length > 0 ? [{type: 'title', text: 'СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ'}] : []).concat(sourceList), sourceListResult, sourceListPos);
     if(introductionResult[0] && introductionResult[0].length != 1)
         introductionPos.tocData.unshift([1, 'ВВЕДЕНИЕ']);
     if(conclusionResult[0] && conclusionResult[0].length != 1)
         conclusionPos.tocData.unshift([1, 'ЗАКЛЮЧЕНИЕ']);
     if(abbrListResult[0] && abbrListResult[0].length != 1)
         abbrListPos.tocData.unshift([1, 'СПИСОК СОКРАЩЕНИЙ']);
+    if(sourceListResult[0] && sourceListResult[0].length != 1)
+        sourceListPos.tocData.unshift([1, 'СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ']);
     if(!introductionResult.length)
         introductionPos.pageNumber = 0;
     if(!conclusionResult.length)
@@ -67,11 +72,14 @@ function build(uiData){
         mainPos.pageNumber = 0;
     if(!abbrListResult.length)
         abbrListPos.pageNumber = 0;
+    if(!sourceListResult.length)
+        abbrListPos.pageNumber = 0;
     let toc = createTableOfContents(mergeTocData([
         introductionPos,
         mainPos,
         conclusionPos,
-        abbrListPos
+        abbrListPos,
+        sourceListPos
     ]));
     if(toc.length > 0)
         toc.unshift({type: 'title', text: 'СОДЕРЖАНИЕ'});
@@ -80,7 +88,8 @@ function build(uiData){
         .concat(packPages(introductionResult))
         .concat(packPages(mainResult)
         .concat(packPages(conclusionResult)))
-        .concat(packPages(abbrListResult));
+        .concat(packPages(abbrListResult))
+        .concat(packPages(sourceListResult));
 }
 
 class Position{
@@ -96,6 +105,7 @@ class Position{
         this.subchapter = 1;
         this.section = 1;
         this.subsection = 1;
+        this.source = 1;
         this.tocData = [];
     }
 }
@@ -446,6 +456,13 @@ function insertTitle(element, output, pos){
     pos.spacingBefore = 14000;
 }
 
+function insertSource(element, output, pos){
+    let editedText = [...element.text];
+    editedText[0] = '\t' + pos.source + element.text[0].slice(5);
+    pos.source++;
+    insertText({text: editedText}, output, pos);
+}
+
 function buildSequence(seq, output, pos){
     const map = {
         section: insertrHeader,
@@ -455,7 +472,8 @@ function buildSequence(seq, output, pos){
         image: insertImage,
         formula: insertFormula,
         table: insertTable,
-        title: insertTitle
+        title: insertTitle,
+        source: insertSource,
     }
     for(let element of seq){
         map[element.type](element, output, pos);

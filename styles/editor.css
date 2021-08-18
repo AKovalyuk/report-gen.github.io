@@ -15,7 +15,6 @@
     width: 100%;
 }
 .add-button{
-    display: flex;
     width: 30px;
     height: 30px;
     margin: 5px;
@@ -199,4 +198,78 @@ textarea, div[contenteditable="true"]{
     border-radius: 5px;
     outline: none;
     color: grey;
+}
+#add-source{
+    position: fixed;
+    width: 17.5%;
+    height: 35%;
+    background-color: white;
+    border-radius: calc(1rem + 8px);
+    padding: 8px;
+    border: none;
+    box-shadow: 0px 0px 10px 4px rgba(34, 60, 80, 0.2);
+    z-index: 100000;
+    left: 50%;
+    top: 30%;
+}
+#search-source{
+    font-size: 1.5rem;
+    border-radius: 1em;
+    resize: none;
+    width: 100%;
+    text-indent: 1rem;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+#search-block{
+    height: calc(100% - 3rem - 21px);
+    overflow: hidden;
+}
+#add-source-tooltip{
+    text-align: center;
+    height: 1.5rem;
+}
+code{
+    background-color: lightgray;
+    border-radius: 0.2rem;
+}
+#source-list-button-container{
+    height: max-content;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.source-button{
+    width: 70px;
+    height: 50px;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: white;
+    border-radius: 5px;
+    border: grey solid 1.5px;
+}
+.source-preview{
+    font-size: 1.2rem;
+    text-indent: 4rem;
+    word-break: break-all;
+    color: grey;
+}
+.source-autocomplete{
+    white-space: nowrap;
+    text-overflow: clip;
+    width: 100%;
+    height: 1.8rem;
+    font-size: 1.4rem;
+    color: grey;
+}
+.source-autocomplete::before{
+    content: attr(name);
+    display: inline-block;
+    margin-right: 5px;
+}
+.source-autocomplete:nth-child(1){
+    background-color: lightskyblue;
+    color: black;
 }

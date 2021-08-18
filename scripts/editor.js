@@ -542,6 +542,20 @@ class CacheWriter{
         }
         console.log(editorElement.cache);
     }
+    
+    static source(editorElement){
+        let sourceType = editorElement.children[0].selectedOptions[0].getAttribute('name');
+        let obj = {};
+        for(let formTextarea of editorElement.querySelector(`div[name="${sourceType}"]`).children){
+            obj[formTextarea.getAttribute('name')] = formTextarea.value;
+        }
+        editorElement.cache = {
+            text: line_divide('\t0000 ' + editorElement.getElementsByClassName('source-preview')[0].textContent, TimesNewRoman, 14, 481000),
+            sourceType: sourceType,
+            data: obj
+        }
+        console.log(editorElement.cache);
+    }
 }
 
 // collect data from other container (main part in editor for example)
@@ -598,6 +612,12 @@ function collectFromContainer(container){
             elements.push(Object.assign(element.cache, {type: 'table', node: element}));
             continue;
         }
+        if(element.matches('.source')){
+            if(element.cache === undefined)
+                CacheWriter.source(element);
+            elements.push(Object.assign(element.cache, {type: 'source', node: element}));
+            continue;
+        }
     }
     return elements;
 }
@@ -624,6 +644,7 @@ function collect(){
         conclusion: collectFromContainer(document.getElementById('conclusion')),
         abbrList: abbrListCollResult,
         tlist: Object.assign({type: 'tlist', titleType: titleType}, common, special),
+        sourceList: collectFromContainer(document.getElementById('source-list')),
     };
 }
 
@@ -667,4 +688,126 @@ function abbrListOnblur(){
 function limitTextarea(){
     let width = Number.parseInt(event.target.getAttribute('data-width'));
     event.target.value = line_divide(event.target.value, TimesNewRoman, 14, convert_millimeters(width))[0];
+}
+
+function changeSourceType(e){
+    let container = e.target.parentElement.getElementsByClassName('source-types-container')[0];
+    for(let child of container.children){
+        child.hidden = child.getAttribute('name') != e.target.selectedOptions[0].getAttribute('name');
+    }
+}
+
+function mapSourceToPreview(editorElement){
+    if(editorElement.children[0].selectedOptions[0].getAttribute('name') == 'raw'){
+        editorElement.getElementsByClassName('source-preview')[0].textContent = editorElement.querySelector('div[name="raw"]').children[0].value;
+        return;
+    }
+    if(editorElement.children[0].selectedOptions[0].getAttribute('name') == 'book'){
+        let obj = {};
+        let sum = '';
+        for(let formTextarea of editorElement.querySelector('div[name="book"]').children){
+            obj[formTextarea.getAttribute('name')] = formTextarea.value.trim();
+        }
+        let authorsList = obj.authors.split(/,\s+/), firstAuthor = authorsList[0].split(/\s+/);
+        firstAuthor = firstAuthor[0] + ', ' + firstAuthor.slice(1).join(' ');
+        if(authorsList.length > 3){
+            authorsList = [authorsList[0], '[и др.]'];
+            sum += obj.title;
+        }
+        else{
+            if(!firstAuthor.endsWith('.') && !firstAuthor.length)
+                firstAuthor += '.';
+            sum += firstAuthor + ' ' + obj.title;
+        }
+        if(obj.genre.length)
+            sum += ' : ' + obj.genre;
+        sum += ' / ' + authorsList.join(', ') + (obj.company.length ? '; ' + obj.company : '');
+        if(obj.publication.length)
+            sum += '. – ' + obj.publication;
+        sum += '. – ' + obj.city + ' : ' + obj.publisher + ', ' + obj.year;
+        sum += '. – ' + obj.pages + 'с.';
+        if(obj.series.length)
+            sum += '. – ' + obj.series;
+        sum += sum.endsWith('.') ? '' : '.';
+        editorElement.getElementsByClassName('source-preview')[0].textContent = sum;
+        return;
+    }
+}
+
+function addSource(){
+    event.target.parentElement.parentElement.insertAdjacentHTML('beforeend', source);
+}
+
+let targetTextarea = null, esc = true;
+
+function squareBracketHandler(){
+    if(event.code != 'BracketLeft')
+        return;
+    event.preventDefault();
+    document.getElementById('add-source').hidden = false;
+    document.getElementById('search-source').focus();
+    targetTextarea = event.target;
+    fillSearchBlock();
+}
+
+function fillSearchBlock(){
+    let sources = document.getElementById('source-list').getElementsByClassName('source-preview');
+    let area = document.getElementById('search-block');
+    area.innerHTML = '';
+    if(sources.length){
+        for(let i = 0; i < sources.length; i++){
+            let searchStr = document.getElementById('search-source').value, pos = sources[i].textContent.indexOf(searchStr);
+            if(pos != -1){
+                let newElement = document.createElement('div');
+                newElement.textContent = sources[i].textContent;
+                newElement.classList.add('source-autocomplete');
+                newElement.setAttribute('name', i + 1);
+                area.appendChild(newElement);
+            }
+            else
+                if(`${i + 1}`.indexOf(searchStr) != -1){
+                    let newElement = document.createElement('div');
+                    newElement.textContent = sources[i].textContent;
+                    newElement.classList.add('source-autocomplete');
+                    newElement.setAttribute('name', i + 1);
+                    area.appendChild(newElement);
+                }
+        }
+    }
+    else
+        if(!area.innerHTML.length)
+            area.textContent = 'Список источников пуст';
+}
+
+function finishSourceSearch(){
+    let toInsert = undefined;
+    if(document.getElementById('search-block').children.length != 0 && !esc){
+        toInsert = `⌊${document.getElementById('search-block').children[0].getAttribute('name')}⌉`;
+    }
+    else{
+        toInsert = '[';
+    }
+    event.target.value = '';
+    document.getElementById('add-source').hidden = true;
+    let pos = targetTextarea.selectionDirection == 'forward' ? targetTextarea.selectionStart : targetTextarea.selectionEnd; 
+    targetTextarea.value = targetTextarea.value.slice(0, pos) + toInsert + targetTextarea.value.slice(pos);
+    targetTextarea.setSelectionRange(pos + toInsert.length, pos + toInsert.length);
+    targetTextarea.focus();
+    targetTextarea = null;
+    esc = true;
+}
+
+function handleSourceSearchKeyDown(){
+    if(event.code == 'Enter' || event.code == 'Escape'){
+        esc = event.code == 'Escape';
+        event.preventDefault();
+        event.target.blur();
+    }
+    let searchBlock = document.getElementById('search-block');
+    if(searchBlock.children.length){
+        if(event.code == 'ArrowDown')
+            searchBlock.appendChild(searchBlock.removeChild(searchBlock.children[0]));
+        if(event.code == 'ArrowUp')
+            searchBlock.insertBefore(searchBlock.removeChild(searchBlock.lastChild), searchBlock.firstChild);
+    }
 }

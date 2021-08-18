@@ -7,7 +7,7 @@ const buttonAddTable = '<div class="add-button" onclick="addTable(); showButtons
 const buttonAddCodeSnippet = '<div class="add-button" onclick="addCodeSnippet(); showButtons(event.target.parentElement);">C</div>';
 const buttonFromPaste = '<div class="add-button" onclick="fromPaste(); showButtons(event.target.parentElement); upd();">B</div>';
 const miniToolbar = '<div class="mini-toolbar"><button class="mini-toolbar-button" onclick="copyEditorElement();">🗐</button><button class="mini-toolbar-button" onclick="cutEditorElement(); upd();">✂</button><button class="mini-toolbar-button" onclick="deleteEditorElement(); upd();">🞫</button></div>'
-const paragraph = '<div class="paragraph editor-element">' + miniToolbar + '<textarea class="paragraph-text" onblur="CacheWriter.paragraph(event.target.parentElement);dumpValue(); upd();"></textarea></div>';
+const paragraph = '<div class="paragraph editor-element">' + miniToolbar + '<textarea class="paragraph-text" onkeydown="squareBracketHandler();" onblur="CacheWriter.paragraph(event.target.parentElement);dumpValue(); upd();"></textarea></div>';
 const section = '<div class="section"><div class="heading editor-element"><div class="mini-toolbar"><button class="mini-toolbar-button" onclick="deleteEditorElement();upd();">🞫</button></div><button class="roll-up" onclick="rollUp();">▼</button><textarea class="heading-text" onblur="dumpValue();CacheWriter.section(event.target.parentElement.parentElement);upd();"></textarea></div><div class="content-container"><div class="v-line"></div><div class="section-content"><div class="insert" onclick="showButtons();" onmouseleave="hideButtons();"></div></div></div>';
 const insert = '<div class="insert" onclick="showButtons();" onmouseleave="hideButtons();"></div>';
 const codeSnippet = '<div class="code-snippet editor-element">' + miniToolbar + '<textarea placeholder="Название листинга" class="code-snippet-caption" onblur="dumpValue();CacheWriter.codeSnippet(event.target.parentElement);upd();"></textarea><textarea placeholder="Паста javascript здесь" class="code-snippet-text" spellcheck=false onblur="dumpValue();CacheWriter.codeSnippet(event.target.parentElement);upd();"></textarea></div>'
@@ -47,3 +47,28 @@ const table =
 </div>`
 const formula = '<div class="formula editor-element">' + miniToolbar + '<textarea placeholder="Формула (LaTeX)" class="formula-text" onblur="renderFormulaPreview();dumpValue();"></textarea></div>'
 //const oldTable = '<div class="table editor-element">' + miniToolbar + '<textarea class="table-caption"  onblur="dumpValue();"></textarea><button class="button-open-table-editor" onclick="openTablEditor();">Открыть редактор</button><div class="table-editor" hidden><div class="table-area" data-widths="50,50"><div class="table-row"><textarea class="table-cell" onmousedown="table_cell_onmousedown();"></textarea><textarea class="table-cell" onmousedown="table_cell_onmousedown();"></textarea></div><div class="table-row"><textarea class="table-cell" onmousedown="table_cell_onmousedown();"></textarea><textarea class="table-cell" onmousedown="table_cell_onmousedown();"></textarea></div></div><button class="table-editor-apply" onclick="escapeTableEditor();">Применить</button></div></div>'
+const source = `<div class="source editor-element" style="margin-top: 8px;">
+<select class="dropdown" style="display: inline-block; width: 50%;" onchange="dumpSelectValue();changeSourceType(event);mapSourceToPreview(event.target.parentElement);CacheWriter.source(event.target.parentElement);upd();">
+    <option name="raw">Ввести вручную</option>
+    <option name="book" selected>Книга</option>
+</select>
+<button class="mini-toolbar-button" style="float: right;" onclick="event.target.parentElement.remove();upd();">🞫</button>
+<div class="source-types-container">
+    <div name="raw" hidden>
+        <textarea class="paragraph-text" name="text" onblur="mapSourceToPreview(event.target.parentElement.parentElement.parentElement);CacheWriter.source(event.target.parentElement.parentElement.parentElement);upd();"></textarea>
+    </div>
+    <div name="book">
+        <textarea class="form-textarea" rows="1" name="title" placeholder="Название книги" onblur="mapSourceToPreview(event.target.parentElement.parentElement.parentElement);CacheWriter.source(event.target.parentElement.parentElement.parentElement);upd();"></textarea>
+        <textarea class="form-textarea" rows="1" name="authors" placeholder="Авторы через запятую (Иванов И. И., Сидоров С.С.)" onblur="mapSourceToPreview(event.target.parentElement.parentElement.parentElement);CacheWriter.source(event.target.parentElement.parentElement.parentElement);upd();"></textarea>
+        <textarea class="form-textarea" rows="1" name="company" placeholder="Организация (необязательно)" onblur="mapSourceToPreview(event.target.parentElement.parentElement.parentElement);CacheWriter.source(event.target.parentElement.parentElement.parentElement);upd();"></textarea>
+        <textarea class="form-textarea" rows="1" name="genre" placeholder="Тип/жанр и т.д. монография/учебник (необязательно)" onblur="mapSourceToPreview(event.target.parentElement.parentElement.parentElement);CacheWriter.source(event.target.parentElement.parentElement.parentElement);upd();"></textarea>
+        <textarea class="form-textarea" rows="1" name="city" placeholder="Город издания" onblur="mapSourceToPreview(event.target.parentElement.parentElement.parentElement);CacheWriter.source(event.target.parentElement.parentElement.parentElement);upd();"></textarea>
+        <textarea class="form-textarea" rows="1" name="publisher" placeholder="Издательство" onblur="mapSourceToPreview(event.target.parentElement.parentElement.parentElement);CacheWriter.source(event.target.parentElement.parentElement.parentElement);upd();"></textarea>
+        <textarea class="form-textarea" rows="1" name="year" placeholder="Год" onblur="mapSourceToPreview(event.target.parentElement.parentElement.parentElement);CacheWriter.source(event.target.parentElement.parentElement.parentElement);upd();"></textarea>
+        <textarea class="form-textarea" rows="1" name="pages" placeholder="Страниц" onblur="mapSourceToPreview(event.target.parentElement.parentElement.parentElement);CacheWriter.source(event.target.parentElement.parentElement.parentElement);upd();"></textarea>
+        <textarea class="form-textarea" rows="1" name="publication" placeholder="Издание (необязательно)" onblur="mapSourceToPreview(event.target.parentElement.parentElement.parentElement);CacheWriter.source(event.target.parentElement.parentElement.parentElement);upd();"></textarea>
+        <textarea class="form-textarea" rows="1" name="series" placeholder="Серия (необязательно)" onblur="mapSourceToPreview(event.target.parentElement.parentElement.parentElement);CacheWriter.source(event.target.parentElement.parentElement.parentElement);upd();"></textarea>
+    </div>
+</div>
+<div class="source-preview"></div>
+</div>`

@@ -69,7 +69,13 @@ function restore(string, font){
     for(let char of string)
     {
         if(string_metrics(char, font) == -1){
-            result += font.placeholder;
+            if(char == '⌊')
+                result += '[';
+            else
+                if(char == '⌉')
+                    result += ']'
+                else
+                    result += font.placeholder;
         }
         else{
             result += char;

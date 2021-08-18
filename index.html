@@ -173,7 +173,12 @@
                     <textarea class="enumeration-text" onblur="CacheWriter.abbrList(event.target.parentElement);upd();abbrListOnblur();dumpValue();"></textarea>
                 </div>
             </div>
-            <div class="structure-element" id="source-list" hidden></div>
+            <div class="structure-element" id="source-list" hidden>
+                <div id="source-list-button-container">
+                    <button class="source-button" onclick="addSource();upd();">+</button>
+                    <button class="source-button">S</button>
+                </div>
+            </div>
         </div>
         <div id="header">
             <select class="dropdown" id="dropdown-select-structure-element" 
@@ -185,6 +190,12 @@
                 <option name="conclusion">Заключение</option>
                 <option name="abbr-list">Список сокращений</option>
                 <option name="source-list">Список источников</option>
+            </select>
+        </div>
+        <div id="add-source" hidden>
+            <textarea id="search-source" rows='1' onkeydown="handleSourceSearchKeyDown();" oninput="fillSearchBlock();" onblur="finishSourceSearch();"></textarea>
+            <div id="search-block"></div>
+            <div id="add-source-tooltip">Выбрать:<code>Enter</code> Отмена:<code>Esc</code></div>
         </div>
     </body>
 </html>
