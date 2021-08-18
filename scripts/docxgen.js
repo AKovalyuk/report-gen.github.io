@@ -134,14 +134,13 @@ function parsePages(pages){
             let element = pages[pageNumber][i];
             if(element.type == 'text'){
                 let runs = [];
-                requrePB = false;
                 for(let j = 0; j < element.text.length; j++){
                     if(j == 0)
                         runs.push(new docx.TextRun({text: element.text[j], break: 0}))
                     else
                         runs.push(new docx.TextRun({text: element.text[j], break: 1}));
                 }
-                let lastLineJustify = i == pages[pageNumber].length - 1 && pageNumber != pages.length - 1 && pages[pageNumber + 1][0].type == 'text' && !pages[pageNumber + 1][0].firstLineIndent;
+                let lastLineJustify = element.text.length != 1 && i == pages[pageNumber].length - 1 && pageNumber != pages.length - 1 && pages[pageNumber + 1][0].type == 'text' && !pages[pageNumber + 1][0].firstLineIndent;
                 paragraphs.push(new docx.Paragraph({
                     children: runs,
                     alignment: lastLineJustify ? docx.AlignmentType.DISTRIBUTE : docx.AlignmentType.JUSTIFIED,
@@ -150,8 +149,10 @@ function parsePages(pages){
                         before: Math.floor(element.sb / 50),
                         line: 340, 
                         lineRule: 'exact'
-                    }
+                    },
+                    pageBreakBefore: requrePB,
                 }));
+                requrePB = false;
                 continue;
             }
             if(element.type == 'heading'){
@@ -297,7 +298,7 @@ function parsePages(pages){
                     pageBreakBefore: true,
                     alignment: docx.AlignmentType.CENTER
                 }));
-                pageBreakBefore = false;
+                requrePB = false;
                 continue;
             }
             if(element.type == 'formula'){

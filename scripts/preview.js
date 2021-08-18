@@ -292,7 +292,7 @@ function renderSelf(newPage){
             let lastLine = doc.createElement('div');
             lastLine.textContent = element.text[element.text.length - 1];
             lastLine.style.textAlignLast = 'left';
-            if(j == page.length - 1 && i != pages.length - 1 && pages[i + 1][0].type == 'text' && !pages[i + 1][0].firstLineIndent)
+            if(element.text.length != 1 && j == page.length - 1 && i != pages.length - 1 && pages[i + 1][0].type == 'text' && !pages[i + 1][0].firstLineIndent)
                 lastLine.style.textAlignLast = 'justify';
             p.appendChild(lastLine);
             if(element.firstLineIndent)

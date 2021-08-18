@@ -115,13 +115,14 @@ function insertText(element, output, pos){
     let i = 0, accomulator = [];
     for(let line of element.text){
         if(TNR_14PT_HEIGHT + pos.position + (i == 0 ? spacingBefore : 0) >= PAGE_HEIGHT){
-            if(accomulator.length != 0)
+            if(accomulator.length != 0){
                 output.push({type: 'text', text: accomulator, sb: (i != 0 ? 0 : spacingBefore), firstLineIndent: i == 0});
+                i += 1;
+            }
             output.push({type: 'pb'});
             pos.pageNumber += 1;
             accomulator = [];
             pos.position = 0;
-            i += 1;
         }
         accomulator.push(line);
         pos.position += TNR_14PT_HEIGHT;
