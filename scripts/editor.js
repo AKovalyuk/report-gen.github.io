@@ -759,7 +759,13 @@ function fillSearchBlock(){
             let searchStr = document.getElementById('search-source').value, pos = sources[i].textContent.indexOf(searchStr);
             if(pos != -1){
                 let newElement = document.createElement('div');
-                newElement.textContent = sources[i].textContent;
+                let leftPos = Math.max(0, pos - 4);
+                let content = sources[i].textContent;
+                newElement.appendChild(document.createTextNode(content.slice(leftPos, pos)));
+                let strng = document.createElement('strong');
+                strng.textContent = content.slice(pos, pos + searchStr.length);
+                newElement.appendChild(strng);
+                newElement.appendChild(document.createTextNode(content.slice(pos + searchStr.length)));
                 newElement.classList.add('source-autocomplete');
                 newElement.setAttribute('name', i + 1);
                 area.appendChild(newElement);
