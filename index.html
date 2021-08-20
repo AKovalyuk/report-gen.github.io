@@ -201,7 +201,7 @@
             </div>
         </div>
         <div id="header">
-            <select class="dropdown" id="dropdown-select-structure-element" 
+            <select class="dropdown" id="dropdown-select-structure-element" style="margin-left: 0;"
             onchange="changeStructureElement(this.selectedOptions[0].getAttribute('name'));">
                 <option name="title">Титульный лист</option>
                 <!---<option name="essay">Реферат</option>-->
@@ -211,6 +211,7 @@
                 <option name="abbr-list">Список сокращений</option>
                 <option name="source-list">Список источников</option>
             </select>
+            <div id="download-button">.DOCX⤓</div>
         </div>
         <div id="add-source" hidden>
             <textarea id="search-source" rows='1' onkeydown="handleSourceSearchKeyDown();" oninput="fillSearchBlock();" onblur="finishSourceSearch();"></textarea>

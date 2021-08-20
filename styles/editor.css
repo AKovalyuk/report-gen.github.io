@@ -271,3 +271,13 @@ code{
     background-color: lightskyblue;
     color: black;
 }
+#download-button{
+    font-family: 'Open Sans';
+    font-size: 1.4rem;
+    color: grey;
+    cursor: pointer;
+    user-select: none;
+}
+#download-button:hover{
+    color: lightgray;
+}

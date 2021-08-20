@@ -657,10 +657,21 @@ function onPreviewResize(){
     renderCheck(preview.contentDocument.body);
 }
 
+function downloadDocument(){
+    generate();
+    event.target.onclick = null;
+    console.log(event.target.onclick);
+    let targ = event.target;
+    setTimeout(() => {
+        targ.onclick = downloadDocument;
+    }, 500);
+}
+
 let previewResizeObserver = new ResizeObserver(onPreviewResize);
 window.onload = function(){
     upd();
     previewResizeObserver.observe(document.getElementById('preview'));
+    document.getElementById('download-button').onclick = downloadDocument;
 }
 
 function changeTitleType(e){
