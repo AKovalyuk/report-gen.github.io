@@ -45,37 +45,37 @@ function hideButtons(){
 
 // functions, that appends new element (add<type>)
 function addParagraph(){
-    let insertPanel = event.target.parentElement;
+    let insertPanel = event.currentTarget.parentElement;
     insertPanel.insertAdjacentHTML('afterend', insert);
     insertPanel.insertAdjacentHTML('afterend', paragraph);
 }
 
 function addCodeSnippet(){
-    let insertPanel = event.target.parentElement;
+    let insertPanel = event.currentTarget.parentElement;
     insertPanel.insertAdjacentHTML('afterend', insert);
     insertPanel.insertAdjacentHTML('afterend', codeSnippet);
 }
 
 function addEnumeration(){
-    let insertPanel = event.target.parentElement;
+    let insertPanel = event.currentTarget.parentElement;
     insertPanel.insertAdjacentHTML('afterend', insert);
     insertPanel.insertAdjacentHTML('afterend', enumeration);
 }
 
 function addImage(){
-    let insertPanel = event.target.parentElement;
+    let insertPanel = event.currentTarget.parentElement;
     insertPanel.insertAdjacentHTML('afterend', insert);
     insertPanel.insertAdjacentHTML('afterend', image);
 }
 
 function addTable(){
-    let insertPanel = event.target.parentElement;
+    let insertPanel = event.currentTarget.parentElement;
     insertPanel.insertAdjacentHTML('afterend', insert);
     insertPanel.insertAdjacentHTML('afterend', table);
 }
 
 function addFormula(){
-    let insertPanel = event.target.parentElement;
+    let insertPanel = event.currentTarget.parentElement;
     insertPanel.insertAdjacentHTML('afterend', insert);
     insertPanel.insertAdjacentHTML('afterend', formula);
 }
@@ -89,7 +89,7 @@ const placeholders = [
 ]
 
 function addSection(){
-    let insertPanel = event.target.parentElement;
+    let insertPanel = event.currentTarget.parentElement;
     let element = event.target, sectionLevel = 0;
     // check nesting leven
     while(element.nodeName != 'BODY'){
@@ -100,7 +100,7 @@ function addSection(){
     insertPanel.insertAdjacentHTML('afterend', insert);
     insertPanel.insertAdjacentHTML('afterend', section);
     // set placeholder for textarea appropirate nesting level
-    event.target.parentElement.nextSibling.getElementsByClassName('heading-text')[0].placeholder = placeholders[sectionLevel];
+    event.currentTarget.parentElement.nextSibling.getElementsByClassName('heading-text')[0].placeholder = placeholders[sectionLevel];
 }
 
 // insert element from inner clipboard

@@ -175,8 +175,28 @@
             </div>
             <div class="structure-element" id="source-list" hidden>
                 <div id="source-list-button-container">
-                    <button class="source-button" onclick="addSource();upd();">+</button>
-                    <button class="source-button">S</button>
+                    <div class="source-button" onclick="addSource();upd();" title="Добавить источник">
+                        <svg width="71" height="51" viewBox="0 0 71 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0.617142" y="0.306488" width="70" height="50" rx="5" fill="white"/>
+                            <rect x="20.6171" y="23.8065" width="30" height="3" fill="#858585"/>
+                            <rect x="34.1171" y="40.3065" width="30" height="3" transform="rotate(-90 34.1171 40.3065)" fill="#858585"/>
+                        </svg>
+                    </div>
+                    <div class="source-button" title="Переупорядочить источники в порядке упоминания">
+                        <svg width="71" height="51" viewBox="0 0 71 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0.617142" y="0.306488" width="70" height="50" rx="5" fill="white"/>
+                            <path d="M47.6171 25.3065L23.6171 13.3065" stroke="#858585" stroke-width="2"/>
+                            <path d="M47.6171 13.3065L23.6171 25.3065" stroke="#858585" stroke-width="2"/>
+                            <path d="M47.6171 25.3065L23.6171 37.3065" stroke="#858585" stroke-width="2"/>
+                            <path d="M23.6171 25.3065L47.6171 37.3065" stroke="#858585" stroke-width="2"/>
+                            <circle cx="47.6171" cy="13.3065" r="3" fill="#858585"/>
+                            <circle cx="23.6171" cy="25.3065" r="3" fill="#858585"/>
+                            <circle cx="47.6171" cy="37.3065" r="3" fill="#858585"/>
+                            <circle cx="23.6171" cy="13.3065" r="2.4" fill="white" stroke="#858585" stroke-width="1.2"/>
+                            <circle cx="47.6171" cy="25.3065" r="2.4" fill="white" stroke="#858585" stroke-width="1.2"/>
+                            <circle cx="23.6171" cy="37.3065" r="2.4" fill="white" stroke="#858585" stroke-width="1.2"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>

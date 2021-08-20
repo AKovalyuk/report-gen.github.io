@@ -53,7 +53,6 @@
 .add-button{
     background-color: white;
     border-radius: 5px;
-    border: grey solid 1.5px;
 }
 textarea, div[contenteditable="true"]{
     outline: none;
@@ -248,7 +247,6 @@ code{
     border-radius: 5px;
     background-color: white;
     border-radius: 5px;
-    border: grey solid 1.5px;
 }
 .source-preview{
     font-size: 1.2rem;
