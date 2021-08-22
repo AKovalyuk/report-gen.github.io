@@ -157,22 +157,21 @@ function parsePages(pages){
             }
             if(element.type == 'heading'){
                 let runs = [];
-                for(let j = 0; j < element.text.length; j++){
+                for(let j = 0; j < element.text.length; j++)
                     runs.push(new docx.TextRun({text: element.text[j], break: j != 0, bold: true}));
-                    paragraphs.push(new docx.Paragraph({
-                        children: [new docx.Bookmark({children: runs, id: 'heading' + headingIndex})],
-                        alignment: docx.AlignmentType.JUSTIFIED,
-                        style: 'BaseStyle',
-                        spacing: {
-                            line: 340,
-                            lineRule: 'exact',
-                            before: Math.floor(element.sb / 50)
-                        },
-                        pageBreakBefore: requrePB,
-                    }));
-                    requrePB = false;
-                    headingIndex++;
-                }
+                paragraphs.push(new docx.Paragraph({
+                    children: runs,
+                    alignment: docx.AlignmentType.JUSTIFIED,
+                    style: 'BaseStyle',
+                    spacing: {
+                        line: 340,
+                        lineRule: 'exact',
+                        before: Math.floor(element.sb / 50)
+                    },
+                    pageBreakBefore: requrePB,
+                }));
+                requrePB = false;
+                headingIndex++;
                 continue;
             }
             if(element.type == 'caption'){

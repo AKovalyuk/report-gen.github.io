@@ -746,13 +746,13 @@ function mapSourceToPreview(editorElement){
 }
 
 function addSource(){
-    event.target.parentElement.parentElement.insertAdjacentHTML('beforeend', source);
+    event.currentTarget.parentElement.parentElement.insertAdjacentHTML('beforeend', source);
 }
 
 let targetTextarea = null, esc = true;
 
 function squareBracketHandler(){
-    if(event.code != 'BracketLeft')
+    if(event.key != '[')
         return;
     event.preventDefault();
     document.getElementById('add-source').hidden = false;
@@ -827,4 +827,62 @@ function handleSourceSearchKeyDown(){
         if(event.code == 'ArrowUp')
             searchBlock.insertBefore(searchBlock.removeChild(searchBlock.lastChild), searchBlock.firstChild);
     }
+}
+
+function reorder(){
+    let time = performance.now();
+    let allTextareas = document.getElementById('editor').querySelectorAll('.sourcable');
+    let sourceCount = document.getElementById('source-list').children.length - 1;
+    let sourceSet = new Set();
+    let textareasWithRefs = [];
+    for(let textarea of allTextareas){
+        let matches = textarea.value.match(/⌊\d+⌉/g);
+        if(matches == null)
+            continue;
+        textareasWithRefs.push(textarea);
+        for(let match of matches){
+            let parseResult = Number.parseInt(match.slice(1));
+            if(!Number.isNaN(parseResult) && Number.isSafeInteger(parseResult) && parseResult > 0 && parseResult <= sourceCount)
+                sourceSet.add(parseResult);
+        }
+    }
+    let removeUnused = true;
+    if(sourceCount != sourceSet.size)
+        removeUnused = confirm("Удалить источники, на которые остутствуют ссылки по тексту?");
+    // sort source list
+    let unusedSources = [], usedSources = [], sourcesContainer = document.getElementById('source-list');
+    // create unused sources list
+    for(let i = 1; i < sourcesContainer.children.length; i++){
+        if(sourceSet.has(i))
+            usedSources.push(sourcesContainer.children[i]);
+        else
+            unusedSources.push(sourcesContainer.children[i]);
+    }
+    while(sourcesContainer.children.length != 1)
+        sourcesContainer.removeChild(sourcesContainer.lastChild);
+    for(let source of usedSources){
+        sourcesContainer.appendChild(source);
+    }
+    if(!removeUnused)
+        for(let source of unusedSources)
+            sourcesContainer.appendChild(source);
+    // edit text
+    // create map
+    let map = {}, numb = 1;
+    for(let i of sourceSet){
+        map[i] = numb;
+        numb++;
+    }
+    for(let textarea of textareasWithRefs){
+        textarea.value = textarea.value.replaceAll(/⌊\d+⌉/g, (str) => {
+            let parseResult = Number.parseInt(str.slice(1));
+            if(!Number.isNaN(parseResult) && Number.isSafeInteger(parseResult) && parseResult > 0 && parseResult <= sourceCount)
+                return `⌊${map[parseResult]}⌉`;
+            return str;
+        });
+        while(!textarea.matches('.editor-element'))
+            textarea = textarea.parentElement;
+        textarea.cache = undefined;
+    }
+    console.log('Reorder in', performance.now() - time, 'ms')
 }

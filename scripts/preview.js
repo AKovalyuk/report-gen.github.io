@@ -308,10 +308,14 @@ function renderSelf(newPage){
                 let line = doc.createElement('div');
                 line.textContent = element.text[i];
                 p.appendChild(line);
+                if(i == 0)
+                    line.style.textIndent = '12.5mm';
             }
             let lastLine = doc.createElement('div');
             lastLine.textContent = element.text[element.text.length - 1];
             lastLine.style.textAlignLast = 'left';
+            if(element.text.length == 1)
+                lastLine.style.textIndent = '12.5mm';
             p.appendChild(lastLine);
             p.style = `margin-top: ${element.sb / 1000}pt;`;
             newPage.appendChild(p);
