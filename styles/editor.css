@@ -281,3 +281,44 @@ code{
 #download-button:hover{
     color: lightgray;
 }
+#help{
+    z-index: 100000;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.help-block{
+    padding: 3vh;
+    box-sizing: border-box;
+    text-align: center;
+    font-family: 'Open Sans';
+    border-radius: 8px;
+    background-color: white;
+    width: 60vh;
+    height: 60vh;
+    top: 20vh;
+    left: calc((100vw - 60vh) / 2);
+    position: relative;
+}
+.help-tooltip{
+    font-size: 1.2rem;
+}
+.help-tooltip::before{
+    content: "[!]";
+    color: orange;
+    margin-right: 0.5rem;
+    font-size: 1.7rem;
+    display: inline-block;
+}
+.help-button-start{
+    font-size: 1.7rem;
+    background-color: lightskyblue;
+    border-radius: 8px;
+    padding: 10px;
+    color: #656565;
+    cursor: pointer;
+    user-select: none;
+}

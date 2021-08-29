@@ -105,10 +105,10 @@ function addSection(){
 
 // insert element from inner clipboard
 function fromPaste(){
-    let insertPanel = event.target.parentElement;
+    let insertPanel = event.currentTarget.parentElement;
     insertPanel.insertAdjacentHTML('afterend', insert);
     insertPanel.insertAdjacentHTML('afterend', clipboard);
-    loadValue(event.target.parentElement.nextSibling);
+    loadValue(event.currentTarget.parentElement.nextSibling);
 }
 
 // function for dropdown, make selected structure element visible, hide others
@@ -205,8 +205,8 @@ let clipboard = null;
 
 // copy element into clipboard
 function copyEditorElement(){
-    let target = event.target, depth=2;
-    if(event.target.parentElement.parentElement.matches('.heading')) depth = 3;
+    let target = event.currentTarget, depth=2;
+    if(event.currentTarget.parentElement.parentElement.matches('.heading')) depth = 3;
     while(depth){
         target = target.parentElement;
         depth--;
@@ -216,8 +216,8 @@ function copyEditorElement(){
 
 // copy element into clipboard & remove
 function cutEditorElement(){
-    let target = event.target, depth=2;
-    if(event.target.parentElement.parentElement.matches('.heading')) depth = 3;
+    let target = event.currentTarget, depth=2;
+    if(event.currentTarget.parentElement.parentElement.matches('.heading')) depth = 3;
     while(depth){
         target = target.parentElement;
         depth--;
@@ -229,8 +229,8 @@ function cutEditorElement(){
 
 // remove element
 function deleteEditorElement(){
-    let target = event.target, depth=2;
-    if(event.target.parentElement.parentElement.matches('.heading')) depth = 3;
+    let target = event.currentTarget, depth=2;
+    if(event.currentTarget.parentElement.parentElement.matches('.heading')) depth = 3;
     while(depth){
         target = target.parentElement;
         depth--;
@@ -672,6 +672,9 @@ window.onload = function(){
     upd();
     previewResizeObserver.observe(document.getElementById('preview'));
     document.getElementById('download-button').onclick = downloadDocument;
+    if(localStorage.getItem('help-version') == null || Number.parseInt(localStorage.getItem('help-version')) < Number.parseInt(document.getElementById('help').getAttribute('data-version'))){
+        document.getElementById('help').hidden = false;
+    }
 }
 
 function changeTitleType(e){
@@ -885,4 +888,9 @@ function reorder(){
         textarea.cache = undefined;
     }
     console.log('Reorder in', performance.now() - time, 'ms')
+}
+
+function hideTip(){
+    document.getElementById('help').hidden = true;
+    localStorage.setItem('help-version', document.getElementById('help').getAttribute('data-version'));
 }
