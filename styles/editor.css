@@ -46,6 +46,7 @@
     font-size: 1.2em;
     text-align: center;
     border-radius: 5px;
+    cursor: pointer;
 }
 .insert:hover{
     border-top: 2px #d4d4d4 solid;
@@ -53,6 +54,7 @@
 .add-button{
     background-color: white;
     border-radius: 5px;
+    cursor: pointer;
 }
 textarea, div[contenteditable="true"]{
     outline: none;
@@ -128,10 +130,14 @@ textarea, div[contenteditable="true"]{
     width: calc(100% - 6px);
     height: max-content;
 }
+.heading{
+    display: flex;
+    align-items: center;
+}
 .heading-text{
     display: inline-block;
     width: calc(100% - 35px);
-    resize: vertical;
+    resize: none;
 }
 .roll-up{
     display: inline-block;
@@ -178,8 +184,9 @@ textarea, div[contenteditable="true"]{
 .form-textarea{
     width: 100%;
     margin-top: 8px;
-    resize: vertical;
+    resize: none;
     min-height: 1.6em;
+    overflow: hidden;
 }
 .form-textarea:nth-child(1){
     margin-top: 0;

@@ -16,8 +16,7 @@ function showButtons(evt){
     editorElements = (evt.parentElement.children.length - 1) / 2 - sections;
     if(sections == 0){
         // TODO text only elements
-        newHTML += (!textOnly ? buttonAddTable + buttonAddCodeSnippet + buttonAddFormula + 
-        buttonAddImage : '') + buttonAddParagraph + buttonAddEnumeration;
+        newHTML += buttonAddParagraph + buttonAddEnumeration + (!textOnly ? buttonAddImage + buttonAddTable + buttonAddCodeSnippet + buttonAddFormula  : '');
         if(clipboard != null && !textOnly)
             newHTML += buttonFromPaste;
     }
@@ -101,6 +100,26 @@ function addSection(){
     insertPanel.insertAdjacentHTML('afterend', section);
     // set placeholder for textarea appropirate nesting level
     event.currentTarget.parentElement.nextSibling.getElementsByClassName('heading-text')[0].placeholder = placeholders[sectionLevel];
+}
+
+const letters = "АБВГДЕЖИКЛМНПРСТУФХЦШЩЭЮЯ";
+
+function resetApplicationNames(){
+    let i = 0;
+    for(let applicationTitle of document.getElementById('applications').querySelectorAll('.heading-text')){
+        applicationTitle.value = `ПРИЛОЖЕНИЕ ${letters[i]}`;
+        i++;
+    }
+    if(document.getElementById('applications').children.length <= letters.length){
+        document.getElementById('button-add-application').hidden = false;
+    }
+    
+}
+
+function addApplication(){
+    event.currentTarget.parentElement.insertAdjacentHTML('beforebegin', application);
+    event.currentTarget.hidden = true;
+    resetApplicationNames();
 }
 
 // insert element from inner clipboard
@@ -235,7 +254,8 @@ function deleteEditorElement(){
         target = target.parentElement;
         depth--;
     }
-    target.nextSibling.remove();
+    if(!target.matches(".application"))
+        target.nextSibling.remove();
     target.remove();
 }
 
@@ -638,6 +658,10 @@ function collect(){
     let abbrListContainer = document.getElementById('abbr-list-container'), abbrListCollResult = [];
     if(abbrListContainer.cache != undefined)
         abbrListCollResult.push(Object.assign({type: 'enumeration', node: abbrListContainer}, abbrListContainer.cache));
+    let applications = [];
+    for(let application of document.getElementById('applications').querySelectorAll('.section-content')){
+        applications.push(collectFromContainer(application));
+    }
     return {
         main: collectFromContainer(document.getElementById('main')),
         introduction: collectFromContainer(document.getElementById('introduction')),
@@ -645,6 +669,7 @@ function collect(){
         abbrList: abbrListCollResult,
         tlist: Object.assign({type: 'tlist', titleType: titleType}, common, special),
         sourceList: collectFromContainer(document.getElementById('source-list')),
+        applications: applications,
     };
 }
 

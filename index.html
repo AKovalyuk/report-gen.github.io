@@ -157,9 +157,6 @@
                     </div>
                 </div>
             </div>
-            <!--<div class="structure-element" id="essay" hidden>
-                <div class="insert insert-nosections" onclick="showButtons();" onmouseleave="hideButtons();"></div>
-            </div>-->
             <div class="structure-element" id="introduction" hidden>
                 <div class="insert insert-nosections" onclick="showButtons();" onmouseleave="hideButtons();"></div>
             </div>
@@ -200,6 +197,17 @@
                     </div>
                 </div>
             </div>
+            <div class="structure-element" id="applications" hidden>
+                <div style="display: flex; justify-content: space-around;">
+                    <div id="button-add-application" title="Добавить приложение" onclick="addApplication(); upd();" style="cursor: pointer;">
+                        <svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0.48468" y="0.375061" width="30" height="30" rx="5" fill="white"/>
+                            <rect x="4.48468" y="13.8751" width="22" height="3" fill="#858585"/>
+                            <rect x="13.9847" y="26.3751" width="22" height="3" transform="rotate(-90 13.9847 26.3751)" fill="#858585"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="header">
             <select class="dropdown" id="dropdown-select-structure-element" style="margin-left: 2rem;"
@@ -211,10 +219,9 @@
                 <option name="conclusion">Заключение</option>
                 <option name="abbr-list">Список сокращений</option>
                 <option name="source-list">Список источников</option>
+                <option name="applications">Приложения</option>
             </select>
-            <div style="width: 30%; display: flex; justify-content: space-around;">
-                <svg id="download-button" width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5.2085" y="23.8071" width="20" height="1.87101" fill="#808080"/><rect x="14.3085" y="25.6781" width="20" height="1.8" transform="rotate(-90 14.3085 25.6781)" fill="#808080"/><rect x="14.3085" y="23.0115" width="7.2" height="1.6" transform="rotate(-30 14.3085 23.0115)" fill="#808080"/><rect x="9.07309" y="20.7971" width="1.6" height="7.2" transform="rotate(-60 9.07309 20.7971)" fill="#808080"/><rect x="0.708496" y="1.17809" width="29" height="29" rx="4.5" stroke="#808080"/></svg>
-            </div>
+            <svg style="margin-right: 40px;" id="download-button" width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5.2085" y="23.8071" width="20" height="1.87101" fill="#808080"/><rect x="14.3085" y="25.6781" width="20" height="1.8" transform="rotate(-90 14.3085 25.6781)" fill="#808080"/><rect x="14.3085" y="23.0115" width="7.2" height="1.6" transform="rotate(-30 14.3085 23.0115)" fill="#808080"/><rect x="9.07309" y="20.7971" width="1.6" height="7.2" transform="rotate(-60 9.07309 20.7971)" fill="#808080"/><rect x="0.708496" y="1.17809" width="29" height="29" rx="4.5" stroke="#808080"/></svg>
         </div>
         <div id="add-source" hidden>
             <textarea id="search-source" rows='1' onkeydown="handleSourceSearchKeyDown();" oninput="fillSearchBlock();" onblur="finishSourceSearch();"></textarea>

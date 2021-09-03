@@ -45,7 +45,8 @@ function build(uiData){
         conclusion = uiData.conclusion, 
         tlist = uiData.tlist,
         abbrList = uiData.abbrList,
-        sourceList = uiData.sourceList;
+        sourceList = uiData.sourceList,
+        applications = uiData.applications;
     let introductionPos = new Position(), introductionResult = [];
     buildSequence((introduction.length > 0 ? [{type: 'title', text: 'ВВЕДЕНИЕ'}] : []).concat(introduction), introductionResult, introductionPos);
     let mainPos = new Position(), mainResult = [];
@@ -74,13 +75,22 @@ function build(uiData){
         abbrListPos.pageNumber = 0;
     if(!sourceListResult.length)
         abbrListPos.pageNumber = 0;
+    let appNumber = 0, appsPoss = [], appsPages = [];
+    for(let application of applications){
+        let applicationPos = new Position(letters[appNumber] + '.'), applicationResult = [];
+        buildSequence([{type: 'title', text: `ПРИЛОЖЕНИЕ ${letters[appNumber]}`}].concat(application), applicationResult, applicationPos);
+        applicationPos.tocData = [[0, `ПРИЛОЖЕНИЕ ${letters[appNumber]}`]];
+        appsPoss.push(applicationPos);
+        appsPages = appsPages.concat(packPages(applicationResult));
+        appNumber++;
+    }
     let toc = createTableOfContents(mergeTocData([
         introductionPos,
         mainPos,
         conclusionPos,
         abbrListPos,
         sourceListPos
-    ]));
+    ].concat(appsPoss)));
     if(toc.length > 0)
         toc.unshift({type: 'title', text: 'СОДЕРЖАНИЕ'});
     return [[tlist]]
@@ -89,11 +99,12 @@ function build(uiData){
         .concat(packPages(mainResult)
         .concat(packPages(conclusionResult)))
         .concat(packPages(abbrListResult))
-        .concat(packPages(sourceListResult));
+        .concat(packPages(sourceListResult))
+        .concat(appsPages);
 }
 
 class Position{
-    constructor(){
+    constructor(appIndex){
         this.position = 0;
         this.image = 1;
         this.table = 1;
@@ -107,6 +118,10 @@ class Position{
         this.subsection = 1;
         this.source = 1;
         this.tocData = [];
+        if(appIndex != undefined)
+            this.appIndex = appIndex;
+        else
+            this.appIndex = "";
     }
 }
 
@@ -150,7 +165,7 @@ function insertTable(element, output, pos){
         rowsHeight.push(maxHeight * TNR_12PT_HEIGHT);
     }
     let preTableText = [...element.caption];
-    preTableText[0] = `Таблица ${pos.table}` + preTableText[0].slice(12);
+    preTableText[0] = `Таблица ${pos.appIndex}${pos.table}` + preTableText[0].slice(12);
     if(headerHeight + 
         rowsHeight[0] + 
         3 * BORDER_TABLE_SIZE + 
@@ -206,7 +221,7 @@ function insertTable(element, output, pos){
         preTableText.length * TNR_14PT_HEIGHT +
         PRE_TABLE_TEXT_AFTER + (firstPB ? 0 : spacingBefore) +
         3 * BORDER_TABLE_SIZE;
-    let tableContinue = [`Продолжение таблицы ${pos.table}`]
+    let tableContinue = [`Продолжение таблицы ${pos.appIndex}${pos.table}`]
     for(let i = 1; i < rows.length; i++){
         if(rowsHeight[i] + pos.position >= PAGE_HEIGHT){
             if(rowsAccomulator.length)
@@ -225,7 +240,7 @@ function insertTable(element, output, pos){
     for(let i = output.length - 1; i >= 0; i--){
         if(output[i].type == 'caption'){
             if(output[i].text == tableContinue)
-                output[i].text = [`Окончание таблицы ${pos.table}`];
+                output[i].text = [`Окончание таблицы ${pos.appIndex}${pos.table}`];
             break;
         }
     }
@@ -304,7 +319,7 @@ function insertImage(element, output, pos){
     let targetWidth = 400, width = element.width, height = element.height;
     let originalAspectRaito = 1. * width / height, destWidth = targetWidth, destHeight = Math.floor(targetWidth / originalAspectRaito);
     let caption = [...element.caption];
-    caption[0] = `Рисунок ${pos.image}` + caption[0].slice(12);
+    caption[0] = `Рисунок ${pos.appIndex}${pos.image}` + caption[0].slice(12);
     let constructionSize = caption.length * TNR_14PT_HEIGHT + destHeight * PUNCTS_PER_PIXEL + PICTURE_BEFORE + spacingBefore + PICTURE_AFTER;
     if(constructionSize - spacingBefore >= PAGE_HEIGHT){
         destWidth = destWidth * (400 / destHeight);
@@ -355,7 +370,7 @@ function insertEnumeration(element, output, pos){
 function insertCodeSnippet(element, output, pos){
     let spacingBefore = Math.max(pos.spacingBefore, SNIPPET_BEFORE);
     let caption = [...element.caption];
-    caption[0] = `Листинг ${pos.snippet}` + caption[0].slice(12);
+    caption[0] = `Листинг ${pos.appIndex}${pos.snippet}` + caption[0].slice(12);
     let logicalRows = element.code, rows = [];
     for(let row of logicalRows){
         let spacesBefore = 0, i = 0;
@@ -393,7 +408,7 @@ function insertCodeSnippet(element, output, pos){
     output.push({type: 'caption', text: caption, sb: (firstPB ? 0 : spacingBefore)});
     let rowsAccomulator = [rows[0]]
     pos.position += CNEW_10PT_HEIGHT + caption.length * TNR_14PT_HEIGHT + PRE_SNIPPET_TEXT_AFTER + (firstPB ? 0 : spacingBefore);
-    let snippetContinue = [`Продолжение листинга ${pos.snippet}`];
+    let snippetContinue = [`Продолжение листинга ${pos.appIndex}${pos.snippet}`];
     for(let i = 1; i < rows.length; i++){
         if(CNEW_10PT_HEIGHT + pos.position >= PAGE_HEIGHT){
             if(rowsAccomulator.length)
@@ -412,7 +427,7 @@ function insertCodeSnippet(element, output, pos){
     for(let i = output.length - 1; i >= 0; i--){
         if(output[i].type == 'caption'){
             if(output[i].text == snippetContinue)
-                output[i].text = [`Окончание листинга ${pos.snippet}`]
+                output[i].text = [`Окончание листинга ${pos.appIndex}${pos.snippet}`]
             break;
         }
     }
