@@ -1,14 +1,33 @@
 .insert{
     display: flex;
-    width: 100%;
-    min-height: 5px;
+    width: 10.1vw;
+    min-height: 1.4rem;
     height: max-content;
-    margin-top: 5px;
-    margin-left: auto;
-    margin-right: auto;
+    border-radius: 0.7rem;
+    margin: 5px auto;
     flex-wrap: wrap;
     justify-content: center;
-    border-top: lightskyblue 2px solid;
+    background-color: skyblue;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+.insert:empty::before{
+    content: "+";
+    color: white;
+}
+.insert:hover{
+    background-color: #d4d4d4 ;
+    color: lightskyblue;
+    width: 100%;
+    margin: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+}
+.insert:hover:empty:before{
+    content: "+";
+    color: skyblue;
 }
 .structure-element{
     height: max-content;
@@ -47,9 +66,6 @@
     text-align: center;
     border-radius: 5px;
     cursor: pointer;
-}
-.insert:hover{
-    border-top: 2px #d4d4d4 solid;
 }
 .add-button{
     background-color: white;
@@ -129,6 +145,7 @@ textarea, div[contenteditable="true"]{
     display: inline-block;
     width: calc(100% - 6px);
     height: max-content;
+    border-bottom: 1px solid #c8c8c8;
 }
 .heading{
     display: flex;
@@ -328,4 +345,7 @@ code{
     color: #656565;
     cursor: pointer;
     user-select: none;
+}
+.application{
+    margin-bottom: 5px;
 }

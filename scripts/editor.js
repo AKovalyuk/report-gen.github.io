@@ -250,11 +250,12 @@ function cutEditorElement(){
 function deleteEditorElement(){
     let target = event.currentTarget, depth=2;
     if(event.currentTarget.parentElement.parentElement.matches('.heading')) depth = 3;
+    if(event.currentTarget.parentElement.matches('.source')) depth = 1;
     while(depth){
         target = target.parentElement;
         depth--;
     }
-    if(!target.matches(".application"))
+    if(!target.matches(".application") && !target.matches('.source'))
         target.nextSibling.remove();
     target.remove();
 }
